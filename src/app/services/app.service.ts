@@ -11,9 +11,9 @@ export class AppService {
 
     constructor(private router: Router, private toastr: ToastrService) {}
 
-    async loginByAuth({email, password}) {
+    async loginByAuth({username, password}) {
         try {
-            const token = await Gatekeeper.loginByAuth(email, password);
+            const token = await Gatekeeper.loginByAuth(username, password);
             localStorage.setItem('token', token);
             await this.getProfile();
             this.router.navigate(['/']);
@@ -32,51 +32,7 @@ export class AppService {
             this.toastr.error(error.response.data.message);
         }
     }
-
-    async loginByGoogle() {
-        try {
-            const token = await Gatekeeper.loginByGoogle();
-            localStorage.setItem('token', token);
-            await this.getProfile();
-            this.router.navigate(['/']);
-        } catch (error) {
-            this.toastr.error(error.response.data.message);
-        }
-    }
-
-    async registerByGoogle() {
-        try {
-            const token = await Gatekeeper.registerByGoogle();
-            localStorage.setItem('token', token);
-            await this.getProfile();
-            this.router.navigate(['/']);
-        } catch (error) {
-            this.toastr.error(error.response.data.message);
-        }
-    }
-
-    async loginByFacebook() {
-        try {
-            const token = await Gatekeeper.loginByFacebook();
-            localStorage.setItem('token', token);
-            await this.getProfile();
-            this.router.navigate(['/']);
-        } catch (error) {
-            this.toastr.error(error.response.data.message);
-        }
-    }
-
-    async registerByFacebook() {
-        try {
-            const token = await Gatekeeper.registerByFacebook();
-            localStorage.setItem('token', token);
-            await this.getProfile();
-            this.router.navigate(['/']);
-        } catch (error) {
-            this.toastr.error(error.response.data.message);
-        }
-    }
-
+    
     async getProfile() {
         try {
             this.user = await Gatekeeper.getProfile();

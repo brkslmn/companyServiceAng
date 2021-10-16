@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AppService} from '@services/app.service';
-
+import { ApiService } from '@services/api.service';
 @Component({
     selector: 'app-menu-sidebar',
     templateUrl: './menu-sidebar.component.html',
@@ -10,10 +9,10 @@ export class MenuSidebarComponent implements OnInit {
     public user;
     public menu = MENU;
 
-    constructor(public appService: AppService) {}
+    constructor(public apiService: ApiService) {}
 
     ngOnInit() {
-        this.user = this.appService.user;
+        this.user = this.apiService.user;
     }
 }
 

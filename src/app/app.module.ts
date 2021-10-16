@@ -1,6 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
+import { AuthGuard } from '@guards/auth.guard';
+import { NonAuthGuard } from '@guards/non-auth.guard';
 
 import {AppRoutingModule} from '@/app-routing.module';
 import {AppComponent} from './app.component';
@@ -32,10 +34,13 @@ import {SubMenuComponent} from './pages/main-menu/sub-menu/sub-menu.component';
 import {MenuItemComponent} from './components/menu-item/menu-item.component';
 import {DropdownComponent} from './components/dropdown/dropdown.component';
 import {DropdownMenuComponent} from './components/dropdown/dropdown-menu/dropdown-menu.component';
+import { CompanyComponent } from './company/company.component';
 
 registerLocaleData(localeEn, 'en-EN');
 
-@NgModule({
+
+
+  @NgModule({
     declarations: [
         AppComponent,
         MainComponent,
@@ -59,7 +64,8 @@ registerLocaleData(localeEn, 'en-EN');
         SubMenuComponent,
         MenuItemComponent,
         DropdownComponent,
-        DropdownMenuComponent
+        DropdownMenuComponent,
+        CompanyComponent
     ],
     imports: [
         BrowserModule,
@@ -73,7 +79,9 @@ registerLocaleData(localeEn, 'en-EN');
             preventDuplicates: true
         })
     ],
-    providers: [],
-    bootstrap: [AppComponent]
+    providers: [AuthGuard,
+                NonAuthGuard
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

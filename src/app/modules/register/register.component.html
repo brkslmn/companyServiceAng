@@ -8,10 +8,36 @@
         <form [formGroup]="registerForm" (ngSubmit)="registerByAuth()">
             <div class="input-group mb-3">
                 <input
-                    formControlName="email"
-                    type="email"
+                    formControlName="firstname"
+                    type="firstname"
                     class="form-control"
-                    placeholder="Email"
+                    placeholder="First Name"
+                />
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-user-plus"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input
+                    formControlName="lastname"
+                    type="lastname"
+                    class="form-control"
+                    placeholder="Last Name"
+                />
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-user-friends"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input
+                    formControlName="username"
+                    type="username"
+                    class="form-control"
+                    placeholder="username"
                 />
                 <div class="input-group-append">
                     <div class="input-group-text">
@@ -32,7 +58,7 @@
                     </div>
                 </div>
             </div>
-            <div class="input-group mb-3">
+            <!--<div class="input-group mb-3">
                 <input
                     formControlName="retypePassword"
                     type="password"
@@ -44,7 +70,7 @@
                         <span class="fas fa-lock"></span>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="row">
                 <div class="col-7">
                     <div class="icheck-primary">
@@ -65,7 +91,6 @@
                         [type]="'submit'"
                         [block]="true"
                         [loading]="isAuthLoading"
-                        [disabled]="isFacebookLoading || isGoogleLoading"
                     >
                         Register
                     </app-button>
@@ -74,28 +99,6 @@
             </div>
         </form>
 
-        <div class="social-auth-links text-center">
-            <app-button
-                class="mb-2"
-                [block]="true"
-                [loading]="isFacebookLoading"
-                [disabled]="isAuthLoading || isGoogleLoading"
-                [icon]="'facebook'"
-                (click)="registerByFacebook()"
-            >
-                Sign up using Facebook
-            </app-button>
-            <app-button
-                [block]="true"
-                [loading]="isGoogleLoading"
-                [disabled]="isAuthLoading || isFacebookLoading"
-                [icon]="'google'"
-                [color]="'danger'"
-                (click)="registerByGoogle()"
-            >
-                Sign up using Google+
-            </app-button>
-        </div>
 
         <a [routerLink]="['/login']" class="text-center">
             I already have a membership</a

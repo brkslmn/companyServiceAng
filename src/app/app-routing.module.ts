@@ -22,6 +22,10 @@ const routes: Routes = [
         canActivateChild: [AuthGuard],
         children: [
             {
+                path: '',
+                component: DashboardComponent,
+            },
+            {
                 path: 'profile',
                 component: ProfileComponent
             },
@@ -37,10 +41,6 @@ const routes: Routes = [
                 path: 'sub-menu-2',
                 component: BlankComponent
             },
-            {
-                path: '',
-                component: DashboardComponent
-            }
         ]
     },
     {

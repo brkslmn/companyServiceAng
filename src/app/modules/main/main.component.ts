@@ -1,5 +1,5 @@
 import {Component, HostBinding, OnInit, Renderer2} from '@angular/core';
-import {AppService} from '@services/app.service';
+import { ApiService } from '@services/api.service';
 
 @Component({
     selector: 'app-main',
@@ -10,7 +10,7 @@ export class MainComponent implements OnInit {
     @HostBinding('class') class = 'wrapper';
     public sidebarMenuOpened = true;
 
-    constructor(private renderer: Renderer2, private appService: AppService) {}
+    constructor(private renderer: Renderer2, private apiService: ApiService) {}
 
     ngOnInit() {
         this.renderer.removeClass(

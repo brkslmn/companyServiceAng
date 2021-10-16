@@ -8,10 +8,10 @@
         <form [formGroup]="loginForm" (ngSubmit)="loginByAuth()">
             <div class="input-group mb-3">
                 <input
-                    formControlName="email"
-                    type="email"
+                    formControlName="username"
+                    type="username"
                     class="form-control"
-                    placeholder="Email"
+                    placeholder="username"
                 />
                 <div class="input-group-append">
                     <div class="input-group-text">
@@ -24,7 +24,7 @@
                     formControlName="password"
                     type="password"
                     class="form-control"
-                    placeholder="Password"
+                    placeholder="password"
                 />
                 <div class="input-group-append">
                     <div class="input-group-text">
@@ -45,7 +45,6 @@
                         [type]="'submit'"
                         [block]="true"
                         [loading]="isAuthLoading"
-                        [disabled]="isFacebookLoading || isGoogleLoading"
                     >
                         Sign In
                     </app-button>
@@ -54,28 +53,7 @@
             </div>
         </form>
 
-        <div class="social-auth-links text-center mb-3">
-            <app-button
-                class="mb-2"
-                [block]="true"
-                [loading]="isFacebookLoading"
-                [disabled]="isAuthLoading || isGoogleLoading"
-                [icon]="'facebook'"
-                (click)="loginByFacebook()"
-            >
-                Sign in using Facebook
-            </app-button>
-            <app-button
-                [block]="true"
-                [loading]="isGoogleLoading"
-                [disabled]="isAuthLoading || isFacebookLoading"
-                [icon]="'google'"
-                [color]="'danger'"
-                (click)="loginByGoogle()"
-            >
-                Sign in using Google+
-            </app-button>
-        </div>
+       
 
         <p class="mb-1">
             <a [routerLink]="['/forgot-password']">I forgot my password</a>

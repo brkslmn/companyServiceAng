@@ -1,6 +1,6 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormGroup, FormControl} from '@angular/forms';
-import {AppService} from '@services/app.service';
+import { ApiService } from '@services/api.service';
 
 @Component({
     selector: 'app-header',
@@ -11,7 +11,7 @@ export class HeaderComponent implements OnInit {
     @Output() toggleMenuSidebar: EventEmitter<any> = new EventEmitter<any>();
     public searchForm: FormGroup;
 
-    constructor(private appService: AppService) {}
+    constructor(private apiService: ApiService) {}
 
     ngOnInit() {
         this.searchForm = new FormGroup({
@@ -20,6 +20,6 @@ export class HeaderComponent implements OnInit {
     }
 
     logout() {
-        this.appService.logout();
+        this.apiService.logout();
     }
 }

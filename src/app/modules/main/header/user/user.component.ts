@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AppService} from '@services/app.service';
 import {DateTime} from 'luxon';
+import { ApiService } from '@services/api.service';
 
 @Component({
     selector: 'app-user',
@@ -10,17 +10,14 @@ import {DateTime} from 'luxon';
 export class UserComponent implements OnInit {
     public user;
 
-    constructor(private appService: AppService) {}
+    constructor(private apiService: ApiService) {}
 
     ngOnInit(): void {
-        this.user = this.appService.user;
+        this.user = this.apiService.user;
     }
 
     logout() {
-        this.appService.logout();
+        this.apiService.logout();
     }
 
-    formatDate(date) {
-        return DateTime.fromISO(date).toFormat('dd LLL yyyy');
-    }
 }
