@@ -1,0 +1,69 @@
+<html>
+<head>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-11">
+    
+            <div class="card-body table-responsive p-0" style="height: 300px;">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Device Name</th>  
+                            <th>Device Version</th> 
+                            <th>Get Update</th> 
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let dev of devices | async">
+                            <td>{{dev.deviceName}}</td>  
+                            <td>{{dev.version}}</td>  
+                            <td>
+                                <input type="checkbox" value=" {{dev.deviceName}}" (change)="onChange(dev.deviceName,$event)">  
+                                Update<br>  
+                            </td>           
+                        </tr>
+                    </tbody>       
+                </table>
+            </div>
+            <label style="font-size:17px">Selected Devices:</label> <br>    
+            <label style="font-size:16px">{{deviceNames}}</label> <br>   
+            <label style="font-size:13px">({{count}})</label> <br>
+            <label style="font-size:13px;color: red">{{errorMsg}}</label><br>
+        </div>
+    </div>
+
+</div>
+<br>
+
+
+
+
+
+<br>
+<div class="uploadFile">
+    <hr>
+    <h1>Upload file to Sftp server for selected devices:</h1>
+    
+    <input #file type="file" multiple/><br>
+    <br>
+    <div class="col-md-2">
+        <input [(ngModel)]="dir" placeholder="dirname">
+    </div>
+    <br>
+    <button type="button" class="btn btn-primary" (click)="upload(file.files)">Update</button>
+    <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
+        {{progress}}%
+    </span>
+
+    <span style="font-weight:bold;color:green;" *ngIf="messageupl">
+        {{messageupl}} 
+    </span>
+</div>
+
+<div class="dirTree">
+</div>
+</body>
+</html>

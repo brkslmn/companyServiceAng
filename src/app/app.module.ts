@@ -12,7 +12,7 @@ import {HeaderComponent} from '@modules/main/header/header.component';
 import {FooterComponent} from '@modules/main/footer/footer.component';
 import {MenuSidebarComponent} from '@modules/main/menu-sidebar/menu-sidebar.component';
 import {BlankComponent} from '@pages/blank/blank.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProfileComponent} from '@pages/profile/profile.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RegisterComponent} from '@modules/register/register.component';
@@ -21,6 +21,7 @@ import {ToastrModule} from 'ngx-toastr';
 import {MessagesComponent} from '@modules/main/header/messages/messages.component';
 import {NotificationsComponent} from '@modules/main/header/notifications/notifications.component';
 import {ButtonComponent} from './components/button/button.component';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import {registerLocaleData} from '@angular/common';
 import localeEn from '@angular/common/locales/en';
@@ -35,16 +36,22 @@ import {MenuItemComponent} from './components/menu-item/menu-item.component';
 import {DropdownComponent} from './components/dropdown/dropdown.component';
 import {DropdownMenuComponent} from './components/dropdown/dropdown-menu/dropdown-menu.component';
 import { CompanyComponent } from './company/company.component';
+import { DeviceComponent } from './device/device.component';
+import { UploadComponent } from './upload/upload.component';
+import { Error404Component } from './error404/error404.component';
+import { MatTreeModule } from '@angular/material/tree';
 
 registerLocaleData(localeEn, 'en-EN');
 
-
+  export function tokenGetter(){
+      return localStorage.getItem("token")
+  }
 
   @NgModule({
     declarations: [
         AppComponent,
-        MainComponent,
         LoginComponent,
+        MainComponent,
         HeaderComponent,
         FooterComponent,
         MenuSidebarComponent,
@@ -54,7 +61,7 @@ registerLocaleData(localeEn, 'en-EN');
         DashboardComponent,
         MessagesComponent,
         NotificationsComponent,
-        ButtonComponent,
+        ButtonComponent,        
         UserComponent,
         ForgotPasswordComponent,
         RecoverPasswordComponent,
@@ -65,18 +72,30 @@ registerLocaleData(localeEn, 'en-EN');
         MenuItemComponent,
         DropdownComponent,
         DropdownMenuComponent,
-        CompanyComponent
+        CompanyComponent,
+        DeviceComponent,
+        UploadComponent,
+        Error404Component
     ],
     imports: [
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
         ReactiveFormsModule,
+        FormsModule,
         BrowserAnimationsModule,
+        MatTreeModule,
         ToastrModule.forRoot({
             timeOut: 3000,
             positionClass: 'toast-bottom-right',
             preventDuplicates: true
+        }),
+        JwtModule.forRoot({
+            config : {
+                tokenGetter: tokenGetter,
+                allowedDomains: ["localhost:5001","localhost:5000"],
+                disallowedRoutes: []
+            }
         })
     ],
     providers: [AuthGuard,

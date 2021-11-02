@@ -13,8 +13,13 @@ import {RecoverPasswordComponent} from '@modules/recover-password/recover-passwo
 import {PrivacyPolicyComponent} from '@modules/privacy-policy/privacy-policy.component';
 import {MainMenuComponent} from '@pages/main-menu/main-menu.component';
 import {SubMenuComponent} from '@pages/main-menu/sub-menu/sub-menu.component';
+import { CompanyComponent } from './company/company.component';
+import { DeviceComponent } from './device/device.component';
+import { UploadComponent } from './upload/upload.component';
+import { Error404Component } from './error404/error404.component';
 
 const routes: Routes = [
+
     {
         path: '',
         component: MainComponent,
@@ -40,6 +45,18 @@ const routes: Routes = [
             {
                 path: 'sub-menu-2',
                 component: BlankComponent
+            },
+            {
+                path: 'company',
+                component: CompanyComponent
+            },
+            {
+                path: 'device',
+                component: DeviceComponent
+            },
+            {
+                path: 'upload',
+                component: UploadComponent
             },
         ]
     },
@@ -68,7 +85,7 @@ const routes: Routes = [
         component: PrivacyPolicyComponent,
         canActivate: [NonAuthGuard]
     },
-    {path: '**', redirectTo: ''}
+    {path: '**', component: Error404Component}
 ];
 
 @NgModule({

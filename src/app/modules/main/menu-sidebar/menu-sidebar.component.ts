@@ -22,21 +22,17 @@ export const MENU = [
         path: ['/']
     },
     {
-        name: 'Blank',
-        path: ['/blank']
+        name: 'Companies',
+        path: ['/company']
     },
     {
-        name: 'Main Menu',
-        children: [
-            {
-                name: 'Sub Menu',
-                path: ['/sub-menu-1']
-            },
+        name: 'Upload File',
+        path: ['/upload']
+    },
+    {
+        name: 'Devices',
+        path: ['/device']
+    },
+    
 
-            {
-                name: 'Blank',
-                path: ['/sub-menu-2']
-            }
-        ]
-    }
 ];

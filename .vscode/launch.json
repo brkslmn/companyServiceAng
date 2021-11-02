@@ -5,13 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         
+        
 
         {
             "type": "pwa-chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+            "url": "https://localhost:4200",
+            "webRoot": "${C:\\Users\\brkslmn\\Desktop\\companyServiceAng}"
         }
     ]
 }

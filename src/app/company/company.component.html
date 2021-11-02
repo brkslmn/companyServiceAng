@@ -1,1 +1,85 @@
-<p>company works!</p>
+<div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Companies</h3>
+
+                <div class="card-tools">
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <form [formGroup]="CompanyForm" (ngSubmit)="onFormSubmit()">
+              <table>  
+              <tr>  
+                <td class="tbl1">  
+                    
+                  <input formControlName="CompanyName" matTooltip="Enter Company Name" matInput placeholder="Company Name">   
+     
+                  <span *ngIf="!CompanyForm.get('CompanyName').value && CompanyForm.get('CompanyName').touched"></span>   
+                </td>
+                <td class="tbl1">  
+                    
+                  <input formControlName="WorkField" matTooltip="Enter WorkField" matInput placeholder="Work Field">   
+     
+                  <span *ngIf="!CompanyForm.get('WorkField').value && CompanyForm.get('WorkField').touched"></span>   
+                </td>   
+                <td class="tbl1">  
+                    
+                  <input formControlName="PhoneNumber" matTooltip="Enter PhoneNumber" matInput placeholder="PhoneNumber">   
+     
+                  <span *ngIf="!CompanyForm.get('PhoneNumber').value && CompanyForm.get('PhoneNumber').touched"></span>   
+                </td>   
+                <td class="tbl1">  
+                    
+                  <input formControlName="Adress" matTooltip="Enter Adress" matInput placeholder="Adress">   
+     
+                  <span *ngIf="!CompanyForm.get('Adress').value && CompanyForm.get('Adress').touched"></span>   
+                </td>   
+              </tr>  
+              <tr>
+              <td  class="content-center">  
+                  <button type="submit" mat-raised-button color="accent"matTooltip="Click Submit Button"[disabled]="!CompanyForm.valid">Submit</button>      
+                  <button type="reset" mat-raised-button color="accent"matTooltip="Click Reset Button" (click)="resetForm()">Reset</button>  
+                </td>  
+                <td>  
+                  <p *ngIf="dataSaved" style="color:rgb(0, 128, 0);font-size:20px;font-weight:bold" Class="success" align="left">  
+                    {{message}}  
+                  </p>  
+                </td>  
+              </tr>  
+            </table>  
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0" style="height: 300px;">
+                <table class="table table-head-fixed text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>Company ID</th>  
+                      <th>Company Name</th>  
+                      <th>Work Field</th>  
+                      <th>Phone Number</th>  
+                      <th>Adress</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let comp of companies | async">
+                        <td>{{comp.id}}</td>  
+                        <td>{{comp.companyName}}</td>  
+                        <td>{{comp.workField}}</td>  
+                        <td>{{comp.phoneNumber}}</td>  
+                        <td>{{comp.adress}}</td>
+                        <td class="tbl2">  
+                          <button type="button" class="btn btn-danger"matTooltip="Click Delete Button"(click)="DeleteCompany(comp.id)">Delete</button>  
+                        </td>  
+                      </tr>  
+                  </tbody>
+                </table>
+            </div>
+
