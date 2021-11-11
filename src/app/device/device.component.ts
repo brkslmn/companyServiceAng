@@ -63,6 +63,7 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   top = this.pageSize[0];
   direct: undefined;
   active: string;
+  word = undefined;
 
   ngAfterViewInit() {
     //this.dataSource.paginator = this.paginator;
@@ -83,6 +84,8 @@ export class DeviceComponent implements OnInit, AfterViewInit{
       this.dataSource.data = (<any>res).value;
       this.lengthData = (<any>res)['@odata.count'];
     })
+
+
   }
   
   getSortingDevices(skip,top,order,direction){
@@ -129,18 +132,23 @@ export class DeviceComponent implements OnInit, AfterViewInit{
         this.skip = (event.pageIndex * event.pageSize);
         this.getSortingDevices(this.skip,this.top,this.active,this.direct);
       }
-      // this.top = event.pageSize;
-      // this.skip = (event.pageIndex * event.pageSize);
-      // this.getDeviceWithPaging(this.skip,this.top); 
     }
   }
 
-  applyFilter(event: Event){
-    console.log(event)
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(input){
+    this.word = input.trim();
+    if(typeof this.word === 'string' && this.word.length >= 1){
+      this.apiService.getFilteredDevice('version', this.word, this.skip, this.top).subscribe((res)=>{
+        this.dataSource.data = (<any>res).value;
+        this.lengthData = (<any>res)['@odata.count'];
+      });
+    }else{
+      this.apiService.getDeviceListByNumber(this.skip,this.top).subscribe((res)=>{
+        this.dataSource.data = (<any>res).value;
+        this.lengthData = (<any>res)['@odata.count'];
+      });
+    }
 
-  
   }
 
   SelectDevice(isSelected, row: Device){

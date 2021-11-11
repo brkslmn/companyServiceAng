@@ -47,6 +47,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { PagingComponent } from './components/paging/paging.component';
+import {MatButtonModule} from '@angular/material/button';
 
 
 registerLocaleData(localeEn, 'en-EN');
@@ -99,6 +100,7 @@ registerLocaleData(localeEn, 'en-EN');
         MatCheckboxModule,
         MatSortModule,
         MatFormFieldModule,
+        MatButtonModule,
         MatInputModule,
         ToastrModule.forRoot({
             timeOut: 3000,

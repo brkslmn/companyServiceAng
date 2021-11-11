@@ -7,9 +7,10 @@
         <div class="col-md-11">
             <mat-label>{{TableName}}</mat-label><br>
                 <mat-form-field appearance="standart">
-                    <mat-label>Filter</mat-label>
-                    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Device1" #input>
+                    <mat-label>Filter:</mat-label>
+                    <input matInput #input placeholder="Ex. Device1" >
                 </mat-form-field>
+                <button mat-flat-button (click)="applyFilter(input.value)" color="accent">Search</button>
                 <div class="mat-elevation-z8">
                     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortChanged($event)">
                         <ng-container matColumnDef="id">
