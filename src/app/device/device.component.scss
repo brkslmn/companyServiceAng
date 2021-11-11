@@ -5,7 +5,7 @@
 
 button {
     margin-left: 10px;
-};
+}
 
 h1 {
     margin-left: 10px;
@@ -18,5 +18,13 @@ table {
 .mat-elevation-z8 {
     width: 90%;
 }
+.mat-form-field {
+    width: 25%;
+}
 
+.mat-raised-button{
+    width: 101%;
+    height: 60px;
+    top: -7px;
+}
 
