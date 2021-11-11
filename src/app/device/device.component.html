@@ -5,52 +5,88 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-11">
-    
-            <div class="card-body table-responsive p-0" style="height: 300px;">
-                <table class="table table-head-fixed text-nowrap">
-                    <thead>
-                        <tr>
-                            <th>Device Name</th>  
-                            <th>Device Version</th> 
-                            <th>Get Update</th> 
-                            
+            <mat-label>{{TableName}}</mat-label><br>
+                <mat-form-field appearance="standart">
+                    <mat-label>Filter</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Device1" #input>
+                </mat-form-field>
+                <div class="mat-elevation-z8">
+                    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortChanged($event)">
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Id"> Device Id </th>
+                            <td mat-cell *matCellDef="let devices"> {{devices.id}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="deviceName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Name"> Device Name </th>
+                            <td mat-cell *matCellDef="let devices"> {{devices.DeviceName}} </td>
+                        </ng-container>
+
+                        <!-- Version Column -->
+                        <ng-container matColumnDef="deviceVersion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Version"> Device Version </th>
+                            <td mat-cell *matCellDef="let devices"> {{devices.Version}} </td>
+                        </ng-container>
+
+                        <!-- Select Column -->
+                        <ng-container matColumnDef="select">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <!--<mat-checkbox (change)="$event ? masterToggle() : null"
+                                                [checked]="selection.hasValue() && inPageAllSelected()"
+                                                [indeterminate]="selection.hasValue() && !inPageAllSelected()"
+                                                [aria-label]="checkboxLabel()"
+                                                [disabled]="disable">
+                                </mat-checkbox>-->
+                            </th>
+                            <td mat-cell *matCellDef="let row">
+                                <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="$event ? SelectDevice($event.checked,row) : null"
+                                                [checked]="isChecked(row.id)"
+                                                [aria-label]="checkboxLabel(row)">
+                                </mat-checkbox>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let dev of devices | async">
-                            <td>{{dev.deviceName}}</td>  
-                            <td>{{dev.version}}</td>  
-                            <td>
-                                <input type="checkbox" value=" {{dev.deviceName}}" (change)="onChange(dev.deviceName,$event)">  
-                                Update<br>  
-                            </td>           
-                        </tr>
-                    </tbody>       
-                </table>
-            </div>
-            <label style="font-size:17px">Selected Devices:</label> <br>    
-            <label style="font-size:16px">{{deviceNames}}</label> <br>   
-            <label style="font-size:13px">({{count}})</label> <br>
-            <label style="font-size:13px;color: red">{{errorMsg}}</label><br>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="pageSize"
+                                   [length]="lengthData"
+                                   (page)="pageChanged($event)"
+                                   showFirstLastButtons
+                                   aria-label="Select page of periodic elements">
+                    </mat-paginator>
+                </div>
         </div>
     </div>
-
 </div>
 <br>
-
-
-
-
-
-<br>
+<div class="info-box">
+    <span class="info-box-icon bg-warning"><i class="fas fa-satellite-dish"></i></span>
+    <div class="info-box-content">
+        <b><span style="font-size:17px">Selected Devices:</span></b>
+        <div *ngFor="let item of selectedList">
+            {{item.DeviceName}}
+        </div>
+        <span class="info-box-number">Number of selected devices : {{selectedList.length}}</span>
+    </div>
+</div>
 <div class="uploadFile">
     <hr>
-    <h1>Upload file to Sftp server for selected devices:</h1>
-    
-    <input #file type="file" multiple/><br>
+    <h1><b>Upload file to Sftp server for selected devices:</b></h1>
+    <!--<div class="custom-file">
+        <input #file type="file" class="custom-file-input" id="customFile">
+        <label class="custom-file-label" for="customFile">Choose file</label>
+    </div>-->
+    <br>
+    <input #file type="file" multiple > <br>
     <br>
     <div class="col-md-2">
-        <input [(ngModel)]="dir" placeholder="dirname">
+        <label>Choose Sftp Path:</label>
+        <input [(ngModel)]="dir" placeholder="For home directory use .">
     </div>
     <br>
     <button type="button" class="btn btn-primary" (click)="upload(file.files)">Update</button>
@@ -63,7 +99,5 @@
     </span>
 </div>
 
-<div class="dirTree">
-</div>
 </body>
 </html>

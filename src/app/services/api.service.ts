@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CompanyComponent } from '@/company/company.component';
 import { Company } from '@/company/company';
 import { Device } from '@/device/device';
+import { environment } from 'environments/environment'; 
 
 @Injectable({
     providedIn: 'root'
@@ -14,40 +15,36 @@ import { Device } from '@/device/device';
 export class ApiService {
     invalidLogin : boolean;
     public user: any = null;
+    public userRoles: string;
 
     constructor(private http: HttpClient, private router:Router, private toastr:ToastrService) {}
     
     public loginByAuth(value){
         const credentials = JSON.stringify(value);
-        this.http.post("https://localhost:5001/users/authenticate", credentials, {
+        this.http.post(environment.apiUrl+"users/authenticate", credentials, {
             headers: new HttpHeaders({
             "Content-Type": "application/json"
         })
     }).subscribe(response => {
       const token = (<any>response).token;
       localStorage.setItem("token", token);
-      // const role = (<any>response).roleName;
-      // localStorage.setItem("role", role);
+      const roleName = (<any>response).roleName;
+      this.userRoles = roleName;
+      localStorage.setItem("roleNames", roleName);
       this.invalidLogin = false;
       this.router.navigate(['/']);
       const user= (<any>response);
       localStorage.setItem("user", JSON.stringify(user));
-     
-      
-     
-      // if (this.user = (<any>response)) {
-      //    return false;
-      //  }
     }, err => {
       if (this.invalidLogin = true) {
         this.toastr.error('İnvalid username or password!');
     }
     });
-
   }
-    async registerByAuth(value){
-      const credentials = JSON.stringify(value);
-      this.http.post("https://localhost:5001/users/register", credentials, {
+
+  async registerByAuth(value){  
+    const credentials = JSON.stringify(value);
+      this.http.post(environment.apiUrl+"users/register", credentials, {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
         })
@@ -58,44 +55,56 @@ export class ApiService {
     
     //Company Services:
     getCompanyList(): Observable<Company[]> {
-      return this.http.get<Company[]>("https://localhost:5001/api/Companies");
+      return this.http.get<Company[]>(environment.apiUrl+"api/Companies");
     }
     CreateCompany(company: Company): Observable<Company>{
       const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
-      return this.http.post<Company>("https://localhost:5001/api/Companies", company, httpOptions);
+      return this.http.post<Company>(environment.apiUrl+"api/Companies", company, httpOptions);
     }
     UpdateCompany(company: Company): Observable<Company> {  
       const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-      return this.http.put<Company>("https://localhost:5001/api/Companies", company, httpOptions);  
+      return this.http.put<Company>(environment.apiUrl+"api/Companies", company, httpOptions);  
     }
     DeleteCompany(companyId: string): Observable<number> {  
       const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-      return this.http.delete<number>("https://localhost:5001/api/Companies/" + companyId, httpOptions);  
+      return this.http.delete<number>(environment.apiUrl+"api/Companies/" + companyId, httpOptions);  
     }  
     //---------------------------
 
     //Device Services:
     getDeviceList(): Observable<Device[]> {
-      return this.http.get<Device[]>("https://localhost:5001/api/Devices");
+      return this.http.get<Device[]>(environment.apiUrl+"api/Devices");
+    }
+    getDeviceNumber() {
+      return this.http.get(environment.apiUrl+"api/Devices/DeviceNumber");
+    }
+    getSortedDevice(skip: number, top: number, order: string, direction: string): Observable<Device[]>{
+      return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$skip="+skip+"&$top="+top+"&$orderBy="+order+" "+direction+"&$count=true");
+    }
+    getFilteredDevice(filterFeature: string, input: string): Observable<Device[]>{
+      return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$filter="+filterFeature+" eq"+" "+input);
+    }
+    
+    getDeviceListByNumber(skip: number, top: number): Observable<Device[]> {
+      return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$skip="+skip+"&$top="+top+"&$count=true");
     }
     CreateDevice(device: Device): Observable<Device>{
       const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
-      return this.http.post<Device>("https://localhost:5001/api/Devices", device, httpOptions);
+      return this.http.post<Device>(environment.apiUrl+"api/Devices", device, httpOptions);
     }
     UpdateDevice(device: Device): Observable<Device> {  
       const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-      return this.http.put<Device>("https://localhost:5001/api/Devices", device, httpOptions);  
+      return this.http.put<Device>(environment.apiUrl+"api/Devices", device, httpOptions);  
     }
     DeleteDevice(deviceId: string): Observable<number> {  
       const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-      return this.http.delete<number>("https://localhost:5001/api/Devices/" + deviceId, httpOptions);  
+      return this.http.delete<number>(environment.apiUrl+"api/Devices/" + deviceId, httpOptions);  
     }  
     //----------------------------
-    
     //Sftp Services:
-    // getSftpFiles(): Observable<Files[]>{
-    //   return this.http.get<Files[]>("https://localhost:5001/api/Sftp");
-    // }
+    getSftpFiles(){
+      return this.http.get(environment.apiUrl+"api/Sftp");
+    }
     //-----------------------------
     async getProfile() {
       try{
@@ -112,7 +121,7 @@ export class ApiService {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       localStorage.removeItem('username');
-      localStorage.removeItem('role');
+      localStorage.removeItem('roleNames');
       this.user = null;
       this.router.navigate(['/login']);
    }

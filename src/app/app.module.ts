@@ -40,6 +40,14 @@ import { DeviceComponent } from './device/device.component';
 import { UploadComponent } from './upload/upload.component';
 import { Error404Component } from './error404/error404.component';
 import { MatTreeModule } from '@angular/material/tree';
+import { MatTableModule } from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import { PagingComponent } from './components/paging/paging.component';
+
 
 registerLocaleData(localeEn, 'en-EN');
 
@@ -75,7 +83,8 @@ registerLocaleData(localeEn, 'en-EN');
         CompanyComponent,
         DeviceComponent,
         UploadComponent,
-        Error404Component
+        Error404Component,
+        PagingComponent
     ],
     imports: [
         BrowserModule,
@@ -85,6 +94,12 @@ registerLocaleData(localeEn, 'en-EN');
         FormsModule,
         BrowserAnimationsModule,
         MatTreeModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatCheckboxModule,
+        MatSortModule,
+        MatFormFieldModule,
+        MatInputModule,
         ToastrModule.forRoot({
             timeOut: 3000,
             positionClass: 'toast-bottom-right',

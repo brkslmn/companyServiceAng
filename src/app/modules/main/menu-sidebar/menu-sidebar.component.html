@@ -12,7 +12,7 @@
 <!-- Sidebar -->
 <div class="sidebar">
     <!-- Sidebar user (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="user-panel mt-3">
         <div class="info">
             <a [routerLink]="['/profile']" class="d-block">
                 <p>Welcome {{ user.username }}</p>
@@ -21,16 +21,21 @@
     </div>
 
     <!-- Sidebar Menu -->
-    <nav class="mt-2" style="overflow-y: hidden">
+    <!--I know it's not true-->
+    <nav *ngIf="roles==='Admin' || roles==='Admin,User'" class="mt-2" style="overflow-y: hidden">
         <ul
             class="nav nav-pills nav-sidebar flex-column"
             data-widget="treeview"
             role="menu"
             data-accordion="false"
+            
+           
         >
             <app-menu-item
+                
                 *ngFor="let item of menu"
                 [menuItem]="item"
+  
             ></app-menu-item>
         </ul>
     </nav>
