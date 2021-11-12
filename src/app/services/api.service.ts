@@ -81,10 +81,16 @@ export class ApiService {
     getSortedDevice(skip: number, top: number, order: string, direction: string): Observable<Device[]>{
       return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$skip="+skip+"&$top="+top+"&$orderBy="+order+" "+direction+"&$count=true");
     }
-    getFilteredDevice(filterFeature: string, input: string, skip: number, top: number): Observable<Device[]>{
+    getFilteredDeviceInt(filterFeature: string, input: string, skip: number, top: number): Observable<Device[]>{
+      return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$filter="+filterFeature+" eq"+" "+input+"&$count=true"+"&$skip="+skip+"&$top="+top);
+    }
+    getFilteredDeviceString(filterFeature: string, input: string, skip: number, top: number): Observable<Device[]>{
       return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$filter="+filterFeature+" eq"+" "+"\'"+input+"\'"+"&$count=true"+"&$skip="+skip+"&$top="+top);
     }
-    getFilteredSortedDevice(filterFeature: string, input: string, skip: number, top: number,  order: string, direction: string): Observable<Device[]>{
+    getFilteredSortedDeviceInt(filterFeature: string, input: string, skip: number, top: number,  order: string, direction: string): Observable<Device[]>{
+      return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$filter="+filterFeature+" eq"+" "+input+"&$count=true"+"&$skip="+skip+"&$top="+top+"&$orderBy="+order+" "+direction);
+    }
+    getFilteredSortedDeviceString(filterFeature: string, input: string, skip: number, top: number,  order: string, direction: string): Observable<Device[]>{
       return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$filter="+filterFeature+" eq"+" "+"\'"+input+"\'"+"&$count=true"+"&$skip="+skip+"&$top="+top+"&$orderBy="+order+" "+direction);
     }
     

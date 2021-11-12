@@ -11,6 +11,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 
+
 @Component({
   selector: 'app-device',
   templateUrl: './device.component.html',
@@ -64,6 +65,8 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   direct: undefined;
   active: string;
   word = undefined;
+  filterFeature: string;
+  filterArray=[];
 
   ngAfterViewInit() {
     //this.dataSource.paginator = this.paginator;
@@ -71,10 +74,10 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   } 
 
   ngOnInit(): void {
-    this.DeviceForm = this.formbuilder.group({
-      deviceName: ['', [Validators.required]],  
-      version: ['', [Validators.required]], 
-    })
+    // this.DeviceForm = this.formbuilder.group({
+    //   deviceName: ['', [Validators.required]],  
+    //   version: ['', [Validators.required]], 
+    // })
     
     this.getDeviceWithPaging(this.skip,this.top);
   }
@@ -83,28 +86,60 @@ export class DeviceComponent implements OnInit, AfterViewInit{
     this.apiService.getDeviceListByNumber(skip,top).subscribe((res)=>{
       this.dataSource.data = (<any>res).value;
       this.lengthData = (<any>res)['@odata.count'];
-    })
-
-
+    });
   }
-  
+
   getSortingDevices(skip,top,order,direction){
     this.apiService.getSortedDevice(skip,top,order,direction).subscribe((res)=>{
       this.dataSource.data = (<any>res).value;
       this.lengthData = (<any>res)['@odata.count'];
     });
   }
-  
+  //->
+  getFilteredSortedDevice(filterFeature,input,skip,top,order,direction){
+    
+    this.filterArray= this.word.split(":"); 
+    this.filterFeature = this.filterArray[0].toString();
+    this.input = this.filterArray[1];
+    if(this.filterFeature == 'id'){
+      parseInt(this.input); 
+      this.apiService.getFilteredSortedDeviceInt(this.filterFeature,this.input,skip,top,order,direction).subscribe((res)=>{
+        this.dataSource.data = (<any>res).value;
+        this.lengthData = (<any>res)['@odata.count'];
+      });
+    }else{
+      this.apiService.getFilteredSortedDeviceString(this.filterFeature,this.input,skip,top,order,direction).subscribe((res)=>{
+        this.dataSource.data = (<any>res).value;
+        this.lengthData = (<any>res)['@odata.count'];
+      });
+    }
+    
+  }
+  getFilteredDevice(filterFeature,input,skip,top){
+    this.filterArray= this.word.split(":");
+    this.filterFeature = this.filterArray[0].toString();
+    this.input = this.filterArray[1];
+    if(this.filterFeature == 'id'){
+      parseInt(this.input); 
+      this.apiService.getFilteredDeviceInt(filterFeature,input,skip,top).subscribe((res)=>{
+        this.dataSource.data = (<any>res).value;
+        this.lengthData = (<any>res)['@odata.count'];
+      });
+    }else{
+     
+      this.apiService.getFilteredDeviceString(filterFeature,input,skip,top).subscribe((res)=>{
+        this.dataSource.data = (<any>res).value;
+        this.lengthData = (<any>res)['@odata.count'];
+      });
+    }
+  }
+
   sortChanged = (event) => {
     this.direct = event.direction;
     this.active = event.active;
 
     if(typeof this.word === 'string' && this.word.length >= 1){
-      this.apiService.getFilteredSortedDevice('version', this.word, this.skip, this.top, this.active, this.direct).subscribe((res)=>{
-        this.dataSource.data = (<any>res).value;
-        this.lengthData = (<any>res)['@odata.count'];
-      });
-
+      this.getFilteredSortedDevice(this.filterFeature, this.word, this.skip, this.top, this.active, this.direct);
     }else{
       //HostBinding or globalize
       this.getSortingDevices(this.skip,this.top,this.active,this.direct);
@@ -118,29 +153,17 @@ export class DeviceComponent implements OnInit, AfterViewInit{
         if(this.direct === undefined || this.direct === ""){
           this.top = event.pageSize;
           this.skip = (event.pageIndex * event.pageSize);
-          this.apiService.getFilteredSortedDevice('version', this.word, this.skip, this.top, this.active, this.direct).subscribe((res)=>{
-            this.dataSource.data = (<any>res).value;
-            this.lengthData = (<any>res)['@odata.count'];
-          });
+          this.getFilteredSortedDevice(this.filterFeature, this.word, this.skip, this.top, this.active, this.direct);
         }else if(this.direct === 'asc'){
           this.top = event.pageSize;
           this.skip = (event.pageIndex * event.pageSize);
-          this.apiService.getFilteredSortedDevice('version', this.word, this.skip, this.top, this.active, this.direct).subscribe((res)=>{
-            this.dataSource.data = (<any>res).value;
-            this.lengthData = (<any>res)['@odata.count'];
-          });
+          this.getFilteredSortedDevice(this.filterFeature, this.word, this.skip, this.top, this.active, this.direct);
         }else if(this.direct === 'desc'){
           this.top = event.pageSize;
           this.skip = (event.pageIndex * event.pageSize);
-          this.apiService.getFilteredSortedDevice('version', this.word, this.skip, this.top, this.active, this.direct).subscribe((res)=>{
-            this.dataSource.data = (<any>res).value;
-            this.lengthData = (<any>res)['@odata.count'];
-          });
+          this.getFilteredSortedDevice(this.filterFeature, this.word, this.skip, this.top, this.active, this.direct);
         }else{
-          this.apiService.getFilteredDevice('version', this.word, this.skip, this.top).subscribe((res)=>{
-            this.dataSource.data = (<any>res).value;
-            this.lengthData = (<any>res)['@odata.count'];
-        });
+          this.getFilteredDevice(this.filterFeature, this.word, this.skip, this.top);
 
       }
         
@@ -165,29 +188,19 @@ export class DeviceComponent implements OnInit, AfterViewInit{
           if(this.direct === undefined || this.direct === ""){
             this.top = event.pageSize;
             this.skip = (event.pageIndex * event.pageSize);
-            this.apiService.getFilteredSortedDevice('version', this.word, this.skip, this.top, this.active, this.direct).subscribe((res)=>{
-              this.dataSource.data = (<any>res).value;
-              this.lengthData = (<any>res)['@odata.count'];
-            });
+            this.getFilteredSortedDevice(this.filterFeature, this.word, this.skip, this.top, this.active, this.direct);
           }else if(this.direct === 'asc'){
             this.top = event.pageSize;
             this.skip = (event.pageIndex * event.pageSize);
-            this.apiService.getFilteredSortedDevice('version', this.word, this.skip, this.top, this.active, this.direct).subscribe((res)=>{
-              this.dataSource.data = (<any>res).value;
-              this.lengthData = (<any>res)['@odata.count'];
-            });
+            this.getFilteredSortedDevice(this.filterFeature, this.word, this.skip, this.top, this.active, this.direct);
           }else if(this.direct === 'desc'){
             this.top = event.pageSize;
             this.skip = (event.pageIndex * event.pageSize);
-            this.apiService.getFilteredSortedDevice('version', this.word, this.skip, this.top, this.active, this.direct).subscribe((res)=>{
-              this.dataSource.data = (<any>res).value;
-              this.lengthData = (<any>res)['@odata.count'];
-            });
+            this.getFilteredSortedDevice(this.filterFeature, this.word, this.skip, this.top, this.active, this.direct);
           }else{ 
-            this.apiService.getFilteredDevice('version', this.word, this.skip, this.top).subscribe((res)=>{
-              this.dataSource.data = (<any>res).value;
-              this.lengthData = (<any>res)['@odata.count'];
-          });}
+            this.getFilteredDevice(this.filterFeature, this.word, this.skip, this.top);
+          
+          }
           
          
         }else {
@@ -208,37 +221,35 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   }    
 }  
 
-
   applyFilter(input){
     this.word = input.trim();
     if(typeof this.word === 'string' && this.word.length >= 1){
       if(this.direct === undefined || this.direct === ""){
-        this.apiService.getFilteredSortedDevice('version', this.word, this.skip, this.top, this.active, this.direct).subscribe((res)=>{
-          this.dataSource.data = (<any>res).value;
-          this.lengthData = (<any>res)['@odata.count'];
-        });
+        this.filterArray= this.word.split(":");
+        this.filterFeature = this.filterArray[0].toString();
+        this.input = this.filterArray[1].toString();
+        this.getFilteredDevice(this.filterFeature, this.input, this.skip, this.top);
       }else if(this.direct === 'asc'){
-        this.apiService.getFilteredSortedDevice('version', this.word, this.skip, this.top, this.active, this.direct).subscribe((res)=>{
-          this.dataSource.data = (<any>res).value;
-          this.lengthData = (<any>res)['@odata.count'];
-        });
+        this.getFilteredSortedDevice(this.filterFeature, this.input, this.skip, this.top, this.active, this.direct);
       }else if(this.direct === 'desc'){
-        this.apiService.getFilteredSortedDevice('version', this.word, this.skip, this.top, this.active, this.direct).subscribe((res)=>{
-          this.dataSource.data = (<any>res).value;
-          this.lengthData = (<any>res)['@odata.count'];
-        });
+        this.getFilteredSortedDevice(this.filterFeature, this.input, this.skip, this.top, this.active, this.direct);
       }else{
-        this.apiService.getFilteredDevice('version', this.word, this.skip, this.top).subscribe((res)=>{
-          this.dataSource.data = (<any>res).value;
-          this.lengthData = (<any>res)['@odata.count'];
-        });
+        this.getFilteredDevice(this.filterFeature, this.input, this.skip, this.top);
       }
       
     }else{
-      this.apiService.getDeviceListByNumber(this.skip,this.top).subscribe((res)=>{
-        this.dataSource.data = (<any>res).value;
-        this.lengthData = (<any>res)['@odata.count'];
-      });
+      
+      if(this.direct === ""){
+        this.getSortingDevices(this.skip,this.top,this.active,this.direct);
+      }else if(this.direct === 'asc'){
+        this.getSortingDevices(this.skip,this.top,this.active,this.direct);
+      }else if(this.direct === 'desc'){
+        this.getSortingDevices(this.skip,this.top,this.active,this.direct);
+      }
+      else{
+        this.getDeviceWithPaging(this.skip,this.top);
+      }
+      
     }
 
   }
