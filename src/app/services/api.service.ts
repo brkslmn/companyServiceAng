@@ -8,6 +8,8 @@ import { CompanyComponent } from '@/company/company.component';
 import { Company } from '@/company/company';
 import { Device } from '@/device/device';
 import { environment } from 'environments/environment'; 
+import { RestService } from './rest.service';
+import { DeviceService } from './device.service';
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +19,7 @@ export class ApiService {
     public user: any = null;
     public userRoles: string;
 
-    constructor(private http: HttpClient, private router:Router, private toastr:ToastrService) {}
+    constructor(private http: HttpClient, private router:Router, private toastr:ToastrService, private rest:RestService, private deviceRest:DeviceService) {}
     
     public loginByAuth(value){
         const credentials = JSON.stringify(value);
@@ -71,45 +73,6 @@ export class ApiService {
     }  
     //---------------------------
 
-    //Device Services:
-    getDeviceList(): Observable<Device[]> {
-      return this.http.get<Device[]>(environment.apiUrl+"api/Devices");
-    }
-    getDeviceNumber() {
-      return this.http.get(environment.apiUrl+"api/Devices/DeviceNumber");
-    }
-    getSortedDevice(skip: number, top: number, order: string, direction: string): Observable<Device[]>{
-      return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$skip="+skip+"&$top="+top+"&$orderBy="+order+" "+direction+"&$count=true");
-    }
-    getFilteredDeviceInt(filterFeature: string, input: string, skip: number, top: number): Observable<Device[]>{
-      return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$filter="+filterFeature+" eq"+" "+input+"&$count=true"+"&$skip="+skip+"&$top="+top);
-    }
-    getFilteredDeviceString(filterFeature: string, input: string, skip: number, top: number): Observable<Device[]>{
-      return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$filter="+filterFeature+" eq"+" "+"\'"+input+"\'"+"&$count=true"+"&$skip="+skip+"&$top="+top);
-    }
-    getFilteredSortedDeviceInt(filterFeature: string, input: string, skip: number, top: number,  order: string, direction: string): Observable<Device[]>{
-      return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$filter="+filterFeature+" eq"+" "+input+"&$count=true"+"&$skip="+skip+"&$top="+top+"&$orderBy="+order+" "+direction);
-    }
-    getFilteredSortedDeviceString(filterFeature: string, input: string, skip: number, top: number,  order: string, direction: string): Observable<Device[]>{
-      return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$filter="+filterFeature+" eq"+" "+"\'"+input+"\'"+"&$count=true"+"&$skip="+skip+"&$top="+top+"&$orderBy="+order+" "+direction);
-    }
-    
-    getDeviceListByNumber(skip: number, top: number): Observable<Device[]> {
-      return this.http.get<Device[]>(environment.apiUrl+"api/Devices?$skip="+skip+"&$top="+top+"&$count=true");
-    }
-    CreateDevice(device: Device): Observable<Device>{
-      const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
-      return this.http.post<Device>(environment.apiUrl+"api/Devices", device, httpOptions);
-    }
-    UpdateDevice(device: Device): Observable<Device> {  
-      const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-      return this.http.put<Device>(environment.apiUrl+"api/Devices", device, httpOptions);  
-    }
-    DeleteDevice(deviceId: string): Observable<number> {  
-      const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-      return this.http.delete<number>(environment.apiUrl+"api/Devices/" + deviceId, httpOptions);  
-    }  
-    //----------------------------
     //Sftp Services:
     getSftpFiles(){
       return this.http.get(environment.apiUrl+"api/Sftp");
