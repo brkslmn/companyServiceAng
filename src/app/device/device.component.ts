@@ -110,11 +110,8 @@ export class DeviceComponent implements OnInit, AfterViewInit{
 
   applyFilter(input){
     this.query.filter(f => f
-      .filterPhrase(`contains(DeviceName,'${input.trim()}')`)
-      .filterPhrase(`contains(Version,'${input.trim()}')`),'or')
-      
-  
-           
+      .filterContains(`contains(DeviceName,'${input.trim()}')`)
+      .filterContains(`contains(Version,'${input.trim()}')`),'or')           
     this.getAllDevices();
   }
 

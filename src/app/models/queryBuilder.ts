@@ -8,29 +8,32 @@ type filterType = string | number;
 export default class FilterBuilder {
     private fragments: QueryFragment[] = [];
 
-    filterExpression = (field: string, operator: string, word: filterType) => {
+    filterNormal = (field: string, operator: string, word: filterType) => {
       this.fragments.push(
         new QueryFragment(FragmentType.Filter, `${field} ${operator} ${this.getValue(word)}`)
       );
       return this;
     };
-    filterPhrase = (phrase: string) => {
-        this.fragments.push(new QueryFragment(FragmentType.Filter, phrase));
+    filterContains = (contains: string) => {
+        this.fragments.push(new QueryFragment(FragmentType.Filter, contains));
         return this;
     };
-    or = (predicate: (filter: FilterBuilder) => FilterBuilder) => {
+    or = (describe: (filter: FilterBuilder) => FilterBuilder) => {
       this.fragments.push(
-        new QueryFragment(FragmentType.Filter, `(${predicate(new FilterBuilder()).Query('or')})`)
+        new QueryFragment(FragmentType.Filter, `(${describe(new FilterBuilder()).Query('or')})`)
       );
       return this;
     };
     Query = (operator: string): string => {
-      if (!this.fragments || this.fragments.length < 1) return '';
-      return this.fragments.map(f => f.value).join(` ${operator} `);
+      if (!this.fragments || this.fragments.length < 1){
+        return '';
+      }else{
+        return this.fragments.map(f => f.value).join(` ${operator} `);
+      } 
     };
   
     private getValue(word: filterType): string {
-      let type: string = typeof word;
+      let type = typeof(word);
       
   
       if (type === 'string') {
@@ -68,10 +71,10 @@ export class QueryBuilder {
         return this;
     }
 
-    filter = (predicate: (filter: FilterBuilder) => FilterBuilder, operator: string = 'or') => {
+    filter = (describe: (filter: FilterBuilder) => FilterBuilder, operator: string = 'or') => {
         this.clear(FragmentType.Filter);
         this.fragments.push(
-          new QueryFragment(FragmentType.Filter, predicate(new FilterBuilder()).Query(operator))
+          new QueryFragment(FragmentType.Filter, describe(new FilterBuilder()).Query(operator))
         );
         return this;
     };
@@ -88,7 +91,7 @@ export class QueryBuilder {
         };
 
         const sortedFragments = orderBy(this.fragments, (sf: QueryFragment) => sf.type);
-        const nonFilterFragments = sortedFragments.filter((sf: QueryFragment) => sf.type !== FragmentType.Filter);
+        const notFilterFragments = sortedFragments.filter((sf: QueryFragment) => sf.type !== FragmentType.Filter);
         const filterFragments = sortedFragments.filter((sf: QueryFragment) => sf.type === FragmentType.Filter);
         
 
@@ -99,7 +102,7 @@ export class QueryBuilder {
         
                                           
         if (filterFragments.length < 1) return query;
-        else if (nonFilterFragments.length > 0) query += '&';
+        else if (notFilterFragments.length > 0) query += '&';
 
         query += this.parseFilters(filterFragments, 'or').trim();
 
@@ -108,7 +111,11 @@ export class QueryBuilder {
     };
 
     private parseFilters(fragments: QueryFragment[], operator: string): string {
-        if (!fragments === null || fragments.length < 1) return '';
-        return '$filter=' + fragments.map(f => f.value).join(` ${operator} `);
+        if (!fragments === null || fragments.length < 1){
+          return '';
+        } else {
+          return '$filter=' + fragments.map(f => f.value).join(` ${operator} `);
+        }
+       
      }
 }
