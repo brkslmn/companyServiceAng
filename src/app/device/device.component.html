@@ -7,9 +7,9 @@
     <div class="row">
         <div class="col-md-11">
                 <mat-label>Devices:</mat-label>
-               <mat-form-field appearance="outline">
+               <mat-form-field class="search" appearance="outline">
                     <mat-label>Filter:</mat-label>
-                    <input matInput #input placeholder="Ex. Row:Search" >
+                    <input matInput type="search" #input placeholder="Ex. Row:Search" >
                     <button mat-raised-button matSuffix (click)="applyFilter(input.value)" color="accent">Search</button>
                 </mat-form-field>
                 
@@ -72,15 +72,30 @@
     </div>
 </div>
 <br>
+
 <div class="info-box">
     <span class="info-box-icon bg-warning"><i class="fas fa-satellite-dish"></i></span>
-    <div class="info-box-content">
-        <b><span style="font-size:17px">Selected Devices:</span></b>
-        <div *ngFor="let item of selectedList">
-            {{item.DeviceName}}
-        </div>
-        <span class="info-box-number">Number of selected devices : {{selectedList.length}}</span>
+   
+    <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3>{{selectedList.length}}</h3><p><b>Device Selected</b></p>
+              </div>
+              <b><span>Selected Devices:</span></b>
+                <div class="innerin">
+                    <div class="devices" *ngFor="let item of selectedList">
+                        <div>{{item.DeviceName}}</div>
+                    </div>
+       
+                </div>
+                <div class="icon">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <a class="small-box-footer">
+                </a>
+            </div>
     </div>
+    
     
 </div>
 <div class="uploadFile">
@@ -96,6 +111,14 @@
     <div class="col-md-2">
         <label>Choose Sftp Path:</label>
         <input [(ngModel)]="dir" placeholder="For home directory use .">
+        <hr>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Max File Size KB</mat-label>
+            <input matInput type="number" [(ngModel)]="MaxFileSize" placeholder="Ex.100">
+        </mat-form-field>
+    </div>
+    <div>
+    
     </div>
     <br>
     <button type="button" class="btn btn-primary" (click)="upload(file.files)">Update</button>

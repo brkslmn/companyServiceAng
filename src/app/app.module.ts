@@ -48,6 +48,7 @@ import { MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { PagingComponent } from './components/paging/paging.component';
 import {MatButtonModule} from '@angular/material/button';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 
 registerLocaleData(localeEn, 'en-EN');
@@ -100,6 +101,7 @@ registerLocaleData(localeEn, 'en-EN');
         MatCheckboxModule,
         MatSortModule,
         MatFormFieldModule,
+        ScrollingModule,
         MatButtonModule,
         MatInputModule,
         ToastrModule.forRoot({

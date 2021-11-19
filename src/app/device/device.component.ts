@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Input, Output, EventEmitter, DefaultIterableDiffer } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { Device } from './device';
 import { empty, Observable, range } from 'rxjs';
@@ -64,7 +64,7 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   errorMsg:string; 
   selectedList=[];
   uploadDeviceList=[];
- 
+  MaxFileSize: number;
 
   word = undefined;
   filterFeature: string;
@@ -204,8 +204,12 @@ export class DeviceComponent implements OnInit, AfterViewInit{
     
     const selectedDevice = this.uploadDeviceList.toString();
     formData.append(selectedDevice, selectedDevice);
+    const MaxFileSize = this.MaxFileSize.toString();
+    formData.append("MaxFileSize", MaxFileSize);
     const directory = this.dir;
     formData.append(directory, directory);
+    
+    
 
     const uploadReq = new HttpRequest('POST', "https://localhost:5001/api/Sftp/UploadFile", formData,{
       reportProgress: true,

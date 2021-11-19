@@ -24,7 +24,7 @@ table {
 .mat-elevation-z8 {
     width: 100%;
 }
-.mat-form-field {
+.search {
      width: 30%;
      height: -50%;
      left: 650px;
@@ -43,8 +43,19 @@ table {
     margin: auto;
     left: 100px;
 }
-// .make-gold {
-//     background-color: rgba(58, 47, 47, 0.179)
-// } 
+small-box bg-warning{
+    height: 250px
+}
+.innerin{
+    max-height: 250px;
+    width: 250px;
+    height: 113px;
+    overflow: scroll;
+}
+.col-lg-3 col-6{
+    max-height: 250px;
+}
 
-
+.info-box{
+    max-height: 250px;
+}
