@@ -1,7 +1,10 @@
 <mat-paginator
-    [pageSizeOptions] = []
-    [pageSize] = 0
-        
+    [pageSizeOptions] = "pageSizeOptions"
+    [pageSize] = "pageSize"
+    [length] = "length"
+    showFirstLastButtons
+    aria-label="aria-label"
+    (page)="pageChanged($event)"
 
 >
 </mat-paginator>

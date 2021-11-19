@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { Device } from './device';
-import { empty, Observable, range } from 'rxjs';
+import { Observable, range } from 'rxjs';
 import { HttpRequest, HttpHeaders, HttpClient, HttpEventType } from '@angular/common/http';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
@@ -41,11 +41,11 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   
   @Input() TableName = 'Device Table';
   @Input() lengthData : number;
-  @Input() pageSize = [5,6,10,15];
+  @Input() pageSize = [5,10,15,20];
   @Input() pageIndex: number;
   @Input() disable = false;
   @Input() input: any;
-  @Output() pageChange: EventEmitter<"pageIndex">;
+  @Output() pageChange: EventEmitter<string>;
   @Output() sortChange = new EventEmitter<string>();
 
 
@@ -102,11 +102,11 @@ export class DeviceComponent implements OnInit, AfterViewInit{
    
   }
   
-  pageChanged(event){
-    this.query.top(event.pageSize);
-    this.query.skip(event.pageIndex * event.pageSize);
-    this.getAllDevices();
-  }  
+  // pageChanged(event){
+  //   this.query.top(event.pageSize);
+  //   this.query.skip(event.pageIndex * event.pageSize);
+  //   this.getAllDevices();
+  // }  
 
   applyFilter(input){
     this.query.filter(f => f

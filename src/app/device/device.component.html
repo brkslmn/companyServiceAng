@@ -1,8 +1,4 @@
-<html>
-<head>
 
-</head>
-<body>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-11">
@@ -59,12 +55,13 @@
                         </tr>
                     </table>
 
-                    <mat-paginator [pageSizeOptions]="pageSize"
+                    <app-paging [pageSizeOptions]="pageSize"
                                    [length]="lengthData"
-                                   (page)="pageChanged($event)"
+                                   [query] = "query"
+                                   (getEntity)="getAllDevices()"
                                    showFirstLastButtons
                                    aria-label="Select page of periodic elements">
-                    </mat-paginator>
+                    </app-paging>
 
                    
                 </div>
@@ -114,7 +111,7 @@
         <hr>
         <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Max File Size KB</mat-label>
-            <input matInput type="number" [(ngModel)]="MaxFileSize" placeholder="Ex.100">
+            <input matInput type="number" value = "0" [(ngModel)]="MaxFileSize" placeholder="Ex.100">
         </mat-form-field>
     </div>
     <div>
@@ -130,6 +127,3 @@
         {{messageupl}} 
     </span>
 </div>
-
-</body>
-</html>
