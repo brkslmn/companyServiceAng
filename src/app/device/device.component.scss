@@ -1,8 +1,3 @@
-html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-}
-
 .custom-file {
     width: 20%;
     margin-left: 10px;
@@ -17,7 +12,6 @@ h1 {
 }
 
 table {
-   
     width: 100%;
 }
 
@@ -27,8 +21,8 @@ table {
 .search {
      width: 30%;
      height: -50%;
-     left: 650px;
-     top: 10px;
+     left: 63%;
+     top: 20px;
  }
 
 .mat-raised-button{
@@ -36,26 +30,55 @@ table {
      height: 60px;
      top: -8px;
 }
-.mat-label{
-    color: yellow;
+.label{
+    font-size: large;
+    color: rgb(53, 53, 14);
+    left: 250px;
 }
 .container-fluid{
     margin: auto;
     left: 100px;
 }
-small-box bg-warning{
-    height: 250px
+.header{
+    border-width: 5px;
+    border-color: rgb(255, 255, 255);
+    border-style: solid;
 }
 .innerin{
-    max-height: 250px;
-    width: 250px;
-    height: 113px;
+    
+    width: 200px;
+    height: 250px;
     overflow: scroll;
 }
-.col-lg-3 col-6{
-    max-height: 250px;
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+.inner{
+    width: 1000px;
+    height: 100px;
+}
+info-box-icon bg-warning{
+    width: 50px;
+    height: 150px;
 }
 
 .info-box{
-    max-height: 250px;
+    flex: 1;
+    
+}
+
+.float-container{
+    display: flex;
+}
+.uploadFile{
+    margin-left: 30px;
+    margin-bottom: 20px;
+    width: 83%;
+    border-width: 5px;
+    border-color: rgb(255, 251, 251);
+    border-style: groove;
+    
+    
 }

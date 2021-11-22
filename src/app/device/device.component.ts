@@ -12,6 +12,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { DeviceService } from '@services/device.service';
 import { QueryBuilder } from '@/models/queryBuilder';
+import { threadId } from 'worker_threads';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -42,7 +44,7 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   @Input() TableName = 'Device Table';
   @Input() lengthData : number;
   @Input() pageSize = [5,10,15,20];
-  @Input() pageIndex: number;
+  @Input() pageIndex: 1;
   @Input() disable = false;
   @Input() input: any;
   @Output() pageChange: EventEmitter<string>;
@@ -65,11 +67,12 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   selectedList=[];
   uploadDeviceList=[];
   MaxFileSize: number;
-
+  checked = false;
   word = undefined;
   filterFeature: string;
   filterArray=[];
-
+  selectedLenght : number;
+ 
   ngAfterViewInit() {
     //this.dataSource.paginator = this.paginator;
     //this.dataSource.sort = this.sort;
@@ -92,8 +95,17 @@ export class DeviceComponent implements OnInit, AfterViewInit{
       const device = (<any>res).value;
       this.dataSource.data = device;
       this.lengthData = (<any>res)['@odata.count'];
-    });
     
+      console.log(this.selection.selected.length);
+      console.log(this.selectedLenght)
+      this.selectedLenght = this.selection.selected.length;
+      this.selectedLenght = 0;
+      this.selection.clear();
+  
+
+     
+    });
+  
   } 
 
   sortChanged = (event) => {
@@ -103,10 +115,9 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   }
   
   // pageChanged(event){
-  //   this.query.top(event.pageSize);
-  //   this.query.skip(event.pageIndex * event.pageSize);
-  //   this.getAllDevices();
-  // }  
+  //    this.pageSize = event.pageIndex;
+  //    console.log(this.pageSize);
+  //  }  
 
   applyFilter(input){
     this.query.filter(f => f
@@ -114,8 +125,6 @@ export class DeviceComponent implements OnInit, AfterViewInit{
       .filterContains(`contains(Version,'${input.trim()}')`),'or')           
     this.getAllDevices();
   }
-
-
 
 
   SelectDevice(isSelected, row: Device){
@@ -153,34 +162,49 @@ export class DeviceComponent implements OnInit, AfterViewInit{
 
   inPageAllSelected() {
     
-    const numSelected = this.selection.selected.length;   
-    
+    const numSelected = this.selectedLenght;   
+  
     const numRows = this.dataSource.data.length;
-
+    
     if (numSelected === numRows){
-      console.log(this.selection.selected.length);
+      
+      
       return true;
+      
     }
-
+    
     return false;
      
   }
 
   masterToggle() {
+
+    
+    
     if (this.selectedList.length < this.dataSource.data.length){
        this.selectedList.splice(0, this.selectedList.length);
       
      }
+    
     if (this.inPageAllSelected()) {
-        this.selectedList.splice((this.selectedList.length - this.dataSource.data.length), this.selection.selected.length);
+        
+        this.selectedList.splice((this.selectedList.length - this.dataSource.data.length), this.dataSource.data.length);
         this.selection.clear();
-      return;
-    }
-    this.selection.select(...this.dataSource.data);
+        
+    }else{
+      this.selection.select(...this.dataSource.data);
       for(var row of this.dataSource.data) {
          this.selectedList.push(row);
       
-      }  
+      }
+      
+      
+    }
+    
+    this.selectedLenght = this.selection.selected.length;
+    
+    
+     
   }
 
   checkboxLabel(row?: Device): string {

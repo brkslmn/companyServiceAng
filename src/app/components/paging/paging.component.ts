@@ -14,11 +14,11 @@ export class PagingComponent implements OnInit {
   @Input() length: number;
   @Input() query: QueryBuilder;
   @Output() getEntity: EventEmitter<any> = new EventEmitter();
+
+  
   constructor() { }
 
   ngOnInit(): void {
-    
-    
 
   }
 
@@ -26,7 +26,8 @@ export class PagingComponent implements OnInit {
     this.query.top(event.pageSize);
     this.query.skip(event.pageIndex * event.pageSize);
     this.getEntity.emit();
-  }  
 
+  }
+  
 
 }
