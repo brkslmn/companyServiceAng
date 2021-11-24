@@ -12,8 +12,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { DeviceService } from '@services/device.service';
 import { QueryBuilder } from '@/models/queryBuilder';
-import { threadId } from 'worker_threads';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { RouterLinkWithHref } from '@angular/router';
+import { PagingComponent } from '@components/paging/paging.component';
 
 
 @Component({
@@ -22,6 +22,8 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
   styleUrls: ['./device.component.scss']
 })
 
+
+
 export class DeviceComponent implements OnInit, AfterViewInit{
   updates: FormGroup;
   pageEvent: PageEvent;
@@ -29,9 +31,9 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   dataSource = new MatTableDataSource<Device>();
   selection = new SelectionModel<Device>(true, []);
   query: QueryBuilder;
-  
+ 
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: PagingComponent;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private apiService: ApiService, private http:HttpClient, private formbuilder:FormBuilder, private deviceService:DeviceService) {
@@ -44,9 +46,10 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   @Input() TableName = 'Device Table';
   @Input() lengthData : number;
   @Input() pageSize = [5,10,15,20];
-  @Input() pageIndex: 1;
+  @Input() pageIndex: number;
   @Input() disable = false;
   @Input() input: any;
+  @Output() page: EventEmitter<PageEvent>;
   @Output() pageChange: EventEmitter<string>;
   @Output() sortChange = new EventEmitter<string>();
 
@@ -60,7 +63,6 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   dataSaved = false;
   deviceIdUpdate = null;
   message = null;
-  resultText = [];  
   deviceNames:string;  
   count:number=0;  
   errorMsg:string; 
@@ -68,11 +70,13 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   uploadDeviceList=[];
   MaxFileSize: number;
   checked = false;
+  isAllchecked = false;
   word = undefined;
   filterFeature: string;
   filterArray=[];
   selectedLenght : number;
- 
+  map = new Map<number, Device>();
+  
   ngAfterViewInit() {
     //this.dataSource.paginator = this.paginator;
     //this.dataSource.sort = this.sort;
@@ -85,25 +89,19 @@ export class DeviceComponent implements OnInit, AfterViewInit{
     this.query.skip(0);
     this.query.orderBy('id', ' ');
     this.deviceService.query= this.query;
-
+    
     this.getAllDevices();
   }
 
   getAllDevices(){
-
+    
+    
     this.deviceService.getDevices().subscribe((res)=>{
       const device = (<any>res).value;
       this.dataSource.data = device;
+      this.inPageAllSelected();
+      console.log(this.isAllchecked);
       this.lengthData = (<any>res)['@odata.count'];
-    
-      console.log(this.selection.selected.length);
-      console.log(this.selectedLenght)
-      this.selectedLenght = this.selection.selected.length;
-      this.selectedLenght = 0;
-      this.selection.clear();
-  
-
-     
     });
   
   } 
@@ -114,10 +112,6 @@ export class DeviceComponent implements OnInit, AfterViewInit{
    
   }
   
-  // pageChanged(event){
-  //    this.pageSize = event.pageIndex;
-  //    console.log(this.pageSize);
-  //  }  
 
   applyFilter(input){
     this.query.filter(f => f
@@ -128,88 +122,64 @@ export class DeviceComponent implements OnInit, AfterViewInit{
 
 
   SelectDevice(isSelected, row: Device){
-   
+    //myVar[row.id] = row;
     if(isSelected){
-      this.selectedList.push(row);
-      
-    }else{
-      const index = this.selectedList.findIndex(x => x.id === row.id);
-      if(index!==-1){
-       this.selectedList.splice(index,1);
-      }
-    }
+
+      this.map.set(row.id,row);
+      console.log(this.map);
  
+    }else{ 
+      if (this.map.has(row.id)){
+        this.map.delete(row.id);
+      }
+      console.log(this.map);
+      
+    }
+    this.inPageAllSelected();
     return true;
   }
 
   isChecked(id){
-    const index = this.selectedList.findIndex(x => x.id === id);
-    if(index!==-1){
+    const index = this.map.has(id);
+    if(index!==false){
       return true;
-
     }
     return false;
   }
 
-  isAllSelected() {
-
-    const numSelected = this.selectedList.length; 
-    
-    const numData = this.lengthData;
-   
-    return numSelected === numData;
-  }
-
-  inPageAllSelected() {
-    
-    const numSelected = this.selectedLenght;   
-  
-    const numRows = this.dataSource.data.length;
-    
-    if (numSelected === numRows){
-      
-      
-      return true;
-      
+  //Work everytime
+  inPageAllSelected() {  
+    this.isAllchecked = true;  
+    if(this.dataSource.data.length > 0){
+      for(var key of this.dataSource.data){
+        if(this.map.has(key.id) == false){
+         this.isAllchecked =  false;     
+         break
+        }
+      }
     }
-    
-    return false;
-     
-  }
+}
 
   masterToggle() {
-
     
-    
-    if (this.selectedList.length < this.dataSource.data.length){
-       this.selectedList.splice(0, this.selectedList.length);
-      
-     }
-    
-    if (this.inPageAllSelected()) {
-        
-        this.selectedList.splice((this.selectedList.length - this.dataSource.data.length), this.dataSource.data.length);
-        this.selection.clear();
-        
-    }else{
-      this.selection.select(...this.dataSource.data);
-      for(var row of this.dataSource.data) {
-         this.selectedList.push(row);
-      
+    if (this.isAllchecked) {
+      for(var x of this.dataSource.data){
+        this.map.delete(x.id)
       }
       
-      
-    }
-    
-    this.selectedLenght = this.selection.selected.length;
-    
-    
      
+    }else{
+      for(var row of this.dataSource.data) {
+         this.map.set(row.id, row);
+      }
+    }
+    this.inPageAllSelected();
+    
   }
 
   checkboxLabel(row?: Device): string {
     if (!row) {
-      return `${this.inPageAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllchecked ? 'deselect' : 'select'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.getUpdate - 1}`;
   }

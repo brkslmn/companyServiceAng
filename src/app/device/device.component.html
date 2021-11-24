@@ -34,8 +34,7 @@
                             <th mat-header-cell *matHeaderCellDef>
                                 
                                 <mat-checkbox (change)="$event ? masterToggle() : null"
-                                                [checked]="inPageAllSelected()"
-                                                [indeterminate]="inPageAllSelected()"
+                                                [checked]="isAllchecked"
                                                 [aria-label]="checkboxLabel()"
                                                 [disabled]="disable">
                                 </mat-checkbox>
@@ -58,6 +57,7 @@
 
                     <app-paging [pageSizeOptions]="pageSize"
                                    [length]="lengthData"
+                                   [pageIndex] = "pageIndex"
                                    [query] = "query"
                                    (getEntity)="getAllDevices()"
                                    showFirstLastButtons
@@ -77,12 +77,12 @@
     <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>{{selectedList.length}}</h3><p><b>Device Selected</b></p>
+                <h3>{{map.size}}</h3><p><b>Device Selected</b></p>
               </div>
               <b><span>Selected Devices:</span></b>
                 <div class="innerin">
-                    <div class="devices" *ngFor="let item of selectedList">
-                        <div>{{item.DeviceName}}</div>
+                    <div class="devices" *ngFor="let item of map  | keyvalue">
+                        <div>{{item.value.DeviceName}}</div>
                     </div>
        
                 </div>

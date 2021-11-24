@@ -7,27 +7,28 @@ import { PageEvent } from '@angular/material/paginator';
   templateUrl: './paging.component.html',
   styleUrls: ['./paging.component.scss']
 })
-export class PagingComponent implements OnInit {
+export class PagingComponent implements OnInit { 
 
   @Input() pageSizeOptions = [];
   @Input() pageSize: number;
+  @Input() pageIndex: number;
   @Input() length: number;
   @Input() query: QueryBuilder;
   @Output() getEntity: EventEmitter<any> = new EventEmitter();
+  @Output() page: EventEmitter<PageEvent>;
 
   
   constructor() { }
 
   ngOnInit(): void {
-
+    console.log(this.pageIndex);
   }
-
+  
   pageChanged(event){
     this.query.top(event.pageSize);
     this.query.skip(event.pageIndex * event.pageSize);
     this.getEntity.emit();
 
   }
-  
 
 }
