@@ -1,7 +1,7 @@
 export class Device{
     id: number;
-    deviceName: string;
-    version: string;
+    DeviceName: string;
+    Version: string;
     uploadFile: bigint;
     getUpdate: number;
 }

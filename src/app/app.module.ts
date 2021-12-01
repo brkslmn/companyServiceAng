@@ -49,6 +49,15 @@ import {MatInputModule} from '@angular/material/input';
 import { PagingComponent } from './components/paging/paging.component';
 import {MatButtonModule} from '@angular/material/button';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DialogComponent } from '@components/sftp-server-dialog/dialog.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
+import {TreeModule} from 'primeng/tree';
+import { TreeSelectModule } from 'primeng/treeselect';
+
+
 
 
 registerLocaleData(localeEn, 'en-EN');
@@ -58,6 +67,40 @@ registerLocaleData(localeEn, 'en-EN');
   }
 
   @NgModule({
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MatTreeModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatCheckboxModule,
+        MatSortModule,
+        MatFormFieldModule,
+        ScrollingModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatProgressBarModule,
+        MatInputModule,
+        MatIconModule,
+        TreeModule,
+        TreeSelectModule,
+        ToastrModule.forRoot({
+            timeOut: 3000,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true
+        }),
+        JwtModule.forRoot({
+            config : {
+                tokenGetter: tokenGetter,
+                allowedDomains: ["localhost:5001","localhost:5000"],
+                disallowedRoutes: []
+            }
+        })
+    ],
     declarations: [
         AppComponent,
         LoginComponent,
@@ -86,37 +129,11 @@ registerLocaleData(localeEn, 'en-EN');
         DeviceComponent,
         UploadComponent,
         Error404Component,
-        PagingComponent
+        PagingComponent,
+        DialogComponent,
+        
     ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        AppRoutingModule,
-        ReactiveFormsModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        MatTreeModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatCheckboxModule,
-        MatSortModule,
-        MatFormFieldModule,
-        ScrollingModule,
-        MatButtonModule,
-        MatInputModule,
-        ToastrModule.forRoot({
-            timeOut: 3000,
-            positionClass: 'toast-bottom-right',
-            preventDuplicates: true
-        }),
-        JwtModule.forRoot({
-            config : {
-                tokenGetter: tokenGetter,
-                allowedDomains: ["localhost:5001","localhost:5000"],
-                disallowedRoutes: []
-            }
-        })
-    ],
+    
     providers: [AuthGuard,
                 NonAuthGuard
     ],

@@ -5,9 +5,6 @@ import { Device } from '@/device/device';
 import { Observable } from 'rxjs';
 import { QueryBuilder } from '@/models/queryBuilder';
 
-
-
-
 @Injectable({
   providedIn: 'root'
 })

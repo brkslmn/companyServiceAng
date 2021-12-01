@@ -1,84 +1,96 @@
-.custom-file {
-    width: 20%;
-    margin-left: 10px;
-}
-
-button {
-    margin-left: 10px;
-}
-
-h1 {
-    margin-left: 10px;
-}
-
-table {
-    width: 100%;
-}
-
-.mat-elevation-z8 {
-    width: 100%;
-}
-.search {
-     width: 30%;
-     height: -50%;
-     left: 63%;
-     top: 20px;
- }
-
-.mat-raised-button{
-     width: 101%;
-     height: 60px;
-     top: -8px;
-}
-.label{
-    font-size: large;
-    color: rgb(53, 53, 14);
-    left: 250px;
-}
-.container-fluid{
-    margin: auto;
-    left: 100px;
-}
-.header{
-    border-width: 5px;
-    border-color: rgb(255, 255, 255);
-    border-style: solid;
-}
-.innerin{
-    
-    width: 200px;
-    height: 250px;
-    overflow: scroll;
-}
-.grid-container {
+.container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
-}
-.inner{
-    width: 1000px;
-    height: 100px;
-}
-info-box-icon bg-warning{
-    width: 50px;
-    height: 150px;
-}
+    grid-template-columns: 1.6fr 0.4fr 1fr; 
+    grid-template-rows: 0.3fr 1.6fr 1.1fr; 
+    gap: 0px 0px;
+    grid-auto-flow: row;
+  }
+  
+  .Table-Header { 
+        grid-area: 1 / 1 / 2 / 4; 
+        padding: 10px;
+    }
+  
+  .Table { 
+    grid-area: 2 / 1 / 3 / 4; 
+    width: 100%;
+    }
 
-.info-box{
-    flex: 1;
+    table{
+        width: 100%;
+        height: auto;
+    }
     
-}
+  .search { 
+        grid-area: 1 / 3 / 2 / 4;
+        }
+  
+  .DeviceList {
+    display: grid;
+    grid-template-columns: 0.6fr 1.9fr 0.5fr; 
+    grid-template-rows: 1.2fr 0.8fr 1fr; 
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "figure List List"
+      "figure List List"
+      "figure List List";
+    grid-area: 3 / 1 / 4 / 2;
+  }
+  
+  .figure { 
+    grid-area: figure;
+    justify-self: right;
+    }
+    
 
-.float-container{
-    display: flex;
-}
-.uploadFile{
-    margin-left: 30px;
-    margin-bottom: 20px;
-    width: 83%;
-    border-width: 5px;
-    border-color: rgb(255, 251, 251);
-    border-style: groove;
+  .List { grid-area: List; 
+          flex:1; 
+        
+    }
+  
+  .UploadFile {
+    display: grid;
+    justify-self: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "Header Header Header"
+      "Upload Upload Upload"
+      "Upload Upload Upload";
+    grid-area: 3 / 2 / 4 / 4;
     
+  }
+ 
+  .Header { grid-area: Header;}
+  
+  .Upload { grid-area: Upload;}
+  
+  .figure span{
     
-}
+    height: 93%;
+    width: 100%;
+    max-height: 250px;
+    display: block;
+  }
+
+  .figure span > i{
+    
+    height: 100%;
+    width: 100%;
+    font-size: 75px;
+  }
+
+  .List .small-box.bg-warning{
+    
+    width: 80%;
+    margin-right: 20%;
+  }
+  .List .small-box.bg-warning .innerin{
+    overflow: scroll;
+    max-width: 150px;
+    max-height: 250px;
+    height: 130px;
+  }

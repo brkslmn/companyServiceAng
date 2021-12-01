@@ -1,28 +1,22 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
-import { ApiService } from '@services/api.service';
+import { Component, OnInit, AfterViewInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import { Device } from './device';
-import { Observable, range } from 'rxjs';
-import { HttpRequest, HttpHeaders, HttpClient, HttpEventType } from '@angular/common/http';
-import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
+import { HttpRequest, HttpClient, HttpEventType } from '@angular/common/http';
+import {FormGroup, FormBuilder} from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
-import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 import { DeviceService } from '@services/device.service';
 import { QueryBuilder } from '@/models/queryBuilder';
-import { RouterLinkWithHref } from '@angular/router';
 import { PagingComponent } from '@components/paging/paging.component';
-
+import { DialogComponent } from '@components/sftp-server-dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-device',
   templateUrl: './device.component.html',
   styleUrls: ['./device.component.scss']
 })
-
-
 
 export class DeviceComponent implements OnInit, AfterViewInit{
   updates: FormGroup;
@@ -36,7 +30,7 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   @ViewChild(MatPaginator) paginator: PagingComponent;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private apiService: ApiService, private http:HttpClient, private formbuilder:FormBuilder, private deviceService:DeviceService) {
+  constructor(private http:HttpClient, private formbuilder:FormBuilder, private deviceService:DeviceService,public dialog: MatDialog) {
     this.updates = formbuilder.group({
       update: false
     });
@@ -59,27 +53,15 @@ export class DeviceComponent implements OnInit, AfterViewInit{
   public dirlist= [];
   dir: string;
   files: [];
-  DeviceForm: any; 
-  dataSaved = false;
-  deviceIdUpdate = null;
-  message = null;
-  deviceNames:string;  
-  count:number=0;  
-  errorMsg:string; 
+  DeviceForm: any;  
+  count:number=0; 
   selectedList=[];
   uploadDeviceList=[];
   MaxFileSize: number;
-  checked = false;
   isAllchecked = false;
-  word = undefined;
-  filterFeature: string;
-  filterArray=[];
-  selectedLenght : number;
   map = new Map<number, Device>();
   
   ngAfterViewInit() {
-    //this.dataSource.paginator = this.paginator;
-    //this.dataSource.sort = this.sort;
   } 
 
   ngOnInit(): void {
@@ -183,6 +165,18 @@ export class DeviceComponent implements OnInit, AfterViewInit{
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.getUpdate - 1}`;
   }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      height: '75%',
+      width: '50%'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.dir = result[0].item; 
+  });
+
+  }
  
   upload(files) {
     if (files.length === 0)
@@ -192,8 +186,8 @@ export class DeviceComponent implements OnInit, AfterViewInit{
     for (let file of files)
       formData.append(file.name, file);
     
-    for (let item of this.selectedList){
-      this.uploadDeviceList.push(item.DeviceName);
+    for (let item of this.map){ 
+      this.uploadDeviceList.push(item[1].DeviceName);
     }
     
     const selectedDevice = this.uploadDeviceList.toString();
@@ -220,3 +214,6 @@ export class DeviceComponent implements OnInit, AfterViewInit{
     );
   }
 }
+
+
+

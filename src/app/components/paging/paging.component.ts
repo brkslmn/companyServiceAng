@@ -21,7 +21,7 @@ export class PagingComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.pageIndex);
+    
   }
   
   pageChanged(event){

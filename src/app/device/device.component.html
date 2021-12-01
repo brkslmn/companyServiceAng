@@ -1,17 +1,9 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-11">
-        <div class="header">
-            <mat-label class="label">Devices:</mat-label>
-               <mat-form-field class="search" appearance="outline">
-                    <mat-label>Filter:</mat-label>
-                    <input matInput type="search" #input placeholder="Ex. Row:Search" >
-                    <button mat-raised-button matSuffix (click)="applyFilter(input.value)" color="accent">Search</button>
-                </mat-form-field>
-       
-    </div>
-                <div class="mat-elevation-z8">
-                    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortChanged($event)">
+<div class="container">
+  <div class="Table-Header">
+    <mat-label class="label">Devices:</mat-label>
+  </div>
+  <div class="Table">
+     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortChanged($event)">
                         
                         <ng-container matColumnDef="id">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Id"> Device Id </th>
@@ -54,8 +46,7 @@
                             <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
                         </tr>
                     </table>
-
-                    <app-paging [pageSizeOptions]="pageSize"
+                     <app-paging [pageSizeOptions]="pageSize"
                                    [length]="lengthData"
                                    [pageIndex] = "pageIndex"
                                    [query] = "query"
@@ -64,71 +55,71 @@
                                    aria-label="Select page of periodic elements">
                     </app-paging>
 
-                   
-                </div>
-            </div>
-</div>
-</div>
-<br>
-<div class="grid-container">
-<div class="info-box">
-    <span class="info-box-icon bg-warning"><i class="fas fa-satellite-dish"></i></span>
-   
-    <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>{{map.size}}</h3><p><b>Device Selected</b></p>
-              </div>
-              <b><span>Selected Devices:</span></b>
-                <div class="innerin">
-                    <div class="devices" *ngFor="let item of map  | keyvalue">
-                        <div>{{item.value.DeviceName}}</div>
-                    </div>
-       
-                </div>
-                <div class="icon">
-                    <i class="fas fa-plus"></i>
-                </div>
-                <a class="small-box-footer">
-                </a>
-            </div>
-    </div>
+  </div>
+  <div class="search">
+    <mat-form-field class="search" appearance="outline">
+        <mat-label>Filter:</mat-label>
+        <input matInput type="search" #input placeholder="Ex. Row:Search" >
+        <button mat-raised-button matSuffix (click)="applyFilter(input.value)">Search</button>
+    </mat-form-field>
+  </div>
+  <div class="DeviceList">
+    <div class="figure">
 
-    <div class="uploadFile">
-    
-    <h1><b>Upload file to Sftp server for selected devices:</b></h1>
-    <hr>
-    <!--<div class="custom-file">
-        <input #file type="file" class="custom-file-input" id="customFile">
-        <label class="custom-file-label" for="customFile">Choose file</label>
-    </div>-->
-    <br>
-    <input #file type="file" multiple > <br>
-    <br>
-    <div class="col-md-2">
-        <label>Choose Sftp Path:</label>
-        <input [(ngModel)]="dir" placeholder="For home directory use .">
+        <span class="info-box-icon bg-warning">
+            <i class="fas fa-satellite-dish"></i>
+            
+        </span>
+        <a class="small-box-footer">
+        </a>
+    </div>
+    <div class="List">
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>{{map.size}}</h3><p><b>Device Selected</b></p>
+            </div>
+            <b><span>Selected Devices:</span></b>
+            <div class="innerin">
+                <div class="devices" *ngFor="let item of map | keyvalue">
+                    <div>{{item.value.DeviceName}}</div>
+                </div>
+       
+            </div>
+            <div class="icon">
+                <i class="fas fa-plus"></i>
+            </div>
+            <a class="small-box-footer">
+            </a>
+            </div>
+        </div>
+  </div>
+  <div class="UploadFile">
+    <div class="Header">
+        <h1><b>Upload File to Sftp Server for Selected Devices</b></h1>
         <hr>
+    </div>
+    <div class="Upload"> 
+        <!--<input #file type="file" multiple> <br>-->
+        <div class="custom-file col-9">
+            <input #file id="file" type="file" class="custom-file-input" multiple>
+            <label class="custom-file-label" for="file">Choose File</label>
+        </div>
+        <br>
+        <input [(ngModel)]="dir" placeholder="For home directory use .">
+        <button mat-button (click)="openDialog()">Select Sftp Path</button>
+       
         <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Max File Size KB</mat-label>
             <input matInput type="number" value = "0" [(ngModel)]="MaxFileSize" placeholder="Ex.100">
         </mat-form-field>
-    </div>
-    <div>
-    
-    </div>
-    <br>
-    <button type="button" class="btn btn-primary" (click)="upload(file.files)">Update</button>
-    <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
-        {{progress}}%
-    </span>
+        <br>
+        <button type="button" class="btn btn-primary" (click)="upload(file.files)">Update</button>
+        <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
+            {{progress}}%
+        </span>
 
-    <span style="font-weight:bold;color:green;" *ngIf="messageupl">
-        {{messageupl}} 
-    </span>
-</div>
-    
-    
-</div>
-
+        <span style="font-weight:bold;color:green;" *ngIf="messageupl">
+            {{messageupl}} 
+        </span>
+    </div>
 </div>

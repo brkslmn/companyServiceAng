@@ -74,8 +74,8 @@ export class ApiService {
     //---------------------------
 
     //Sftp Services:
-    getSftpFiles(){
-      return this.http.get(environment.apiUrl+"api/Sftp");
+    getSftpFiles(directory: string){
+      return this.http.get(environment.apiUrl+"api/Sftp?remoteDirectory="+directory);
     }
     //-----------------------------
     async getProfile() {
