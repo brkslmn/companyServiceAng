@@ -1,6 +1,6 @@
 <div class="container">
   <div class="Table-Header">
-    <mat-label class="label">Devices:</mat-label>
+    <mat-label class="label"><b>Devices:</b></mat-label>
   </div>
   <div class="Table">
      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortChanged($event)">
@@ -107,7 +107,7 @@
         <br>
         <input [(ngModel)]="dir" placeholder="For home directory use .">
         <button mat-button (click)="openDialog()">Select Sftp Path</button>
-       
+        <br>
         <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Max File Size KB</mat-label>
             <input matInput type="number" value = "0" [(ngModel)]="MaxFileSize" placeholder="Ex.100">

@@ -15,14 +15,14 @@
     <div class="user-panel mt-3">
         <div class="info">
             <a [routerLink]="['/profile']" class="d-block">
-                <p>Welcome {{ user.username }}</p>
+                <p>Welcome {{ user.email }}</p>
             </a>
         </div>
     </div>
 
     <!-- Sidebar Menu -->
     <!--I know it's not true-->
-    <nav *ngIf="roles==='Admin' || roles==='Admin,User'" class="mt-2" style="overflow-y: hidden">
+    <nav *ngIf="roleHaS()" class="mt-2" style="overflow-y: hidden">
         <ul
             class="nav nav-pills nav-sidebar flex-column"
             data-widget="treeview"

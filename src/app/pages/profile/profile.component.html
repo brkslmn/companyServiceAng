@@ -32,71 +32,45 @@
                         </div>
 
                         <h3 class="profile-username text-center">
-                            {{ user.username }}
+                            {{ user.email }}
                         </h3>
-
-                        <p class="text-muted text-center">{{user.firstName}} {{user.lastName}}</p>
-                    </div>
-                    <!-- /.card-body -->
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                              Company Id <a class="float-right">{{user.companyId}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <cdk-accordion class="example-accordion">
+                                    <cdk-accordion-item
+                                      *ngFor="let item of items; let index = index;"
+                                      #accordionItem="cdkAccordionItem"
+                                      class="example-accordion-item"
+                                      role="button"
+                                      tabindex="0"
+                                      [attr.id]="'accordion-header-' + index"
+                                      [attr.aria-expanded]="accordionItem.expanded"
+                                      [attr.aria-controls]="'accordion-body-' + index">
+                                      <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
+                                        {{ item }}
+                                        <span class="example-accordion-item-description">
+                                          Click to {{ accordionItem.expanded ? 'close' : 'open' }}
+                                        </span>
+                                      </div>
+                                      <div
+                                        class="example-accordion-item-body"
+                                        role="region"
+                                        [style.display]="accordionItem.expanded ? '' : 'none'"
+                                        [attr.id]="'accordion-body-' + index"
+                                        [attr.aria-labelledby]="'accordion-header-' + index">
+                                        {{user.role}}
+                                      </div>
+                                    </cdk-accordion-item>
+                                  </cdk-accordion>
+                            </li>
+                        </ul>
+                      
+                    </div> 
                 </div>
-                <!-- /.card -->
-
-                <!-- About Me Box -->
-                <!--<div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">About Me</h3>
-                    </div>
-                     /.card-header 
-                    <div class="card-body">
-                        <strong
-                            ><i class="fas fa-book mr-1"></i> Education</strong
-                        >
-
-                        <p class="text-muted">
-                            B.S. in Computer Science from the University of
-                            Tennessee at Knoxville
-                        </p>
-
-                        <hr />
-
-                        <strong
-                            ><i class="fas fa-map-marker-alt mr-1"></i>
-                            Location</strong
-                        >
-
-                        <p class="text-muted">Malibu, California</p>
-
-                        <hr />
-
-                        <strong
-                            ><i class="fas fa-pencil-alt mr-1"></i>
-                            Skills</strong
-                        >
-
-                        <p class="text-muted">
-                            <span class="tag tag-danger">UI Design</span>
-                            <span class="tag tag-success">Coding</span>
-                            <span class="tag tag-info">Javascript</span>
-                            <span class="tag tag-warning">PHP</span>
-                            <span class="tag tag-primary">Node.js</span>
-                        </p>
-
-                        <hr />
-
-                        <strong
-                            ><i class="far fa-file-alt mr-1"></i> Notes</strong
-                        >
-
-                        <p class="text-muted">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Etiam fermentum enim neque.
-                        </p>
-                    </div>
-                </div>-->
-           
-            </div>
-
+           </div>
         </div>
-
     </div>
 </section>

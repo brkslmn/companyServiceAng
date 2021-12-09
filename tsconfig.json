@@ -20,6 +20,7 @@
             "@modules/*": ["app/modules/*"],
             "@pages/*": ["app/pages/*"],
             "@services/*": ["app/services/*"],
+            "@Models/*": ["app/models/*"],
             "@/*": ["app/*"]
         }
     },

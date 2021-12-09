@@ -1,9 +1,8 @@
 import {CollectionViewer, SelectionChange, DataSource} from '@angular/cdk/collections';
 import {FlatTreeControl} from '@angular/cdk/tree';
-import {Component, Injectable} from '@angular/core';
+import {Component} from '@angular/core';
 import {BehaviorSubject, merge, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import { ApiService } from '@services/api.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import {DynamicFlatNode} from '@/components/sftp-server-dialog/DynamicFlatNode';
 import { SftpService } from '@services/sftp.service';
@@ -62,10 +61,6 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     this._database.getChildren(node.item).then(value => {this.children = value});
     
     const index = this.data.indexOf(node);
-    // if (!this.children || index < 0) {
-    //   // If no children, or cannot find the node, no op
-    //   return;
-    // }
 
     node.isLoading = true;
 
@@ -88,14 +83,11 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       // notify the change
       this.dataChange.next(this.data);
       node.isLoading = false;
-    }, 100);
+    }, 200);
   }
 }
 
-/**
- * @title Tree with dynamic data
- */
- @Component({
+@Component({
   selector: 'app-dialog',
   templateUrl: 'dialog.component.html',
 })
@@ -120,41 +112,11 @@ export class DialogComponent {
  
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
-  descendantsAllSelected(node: DynamicFlatNode): boolean {
-    const descendants = this.treeControl.getDescendants(node);
-    const descAllSelected =
-      descendants.length > 0 &&
-      descendants.every(child => {
-        return this.checklistSelection.isSelected(child);
-      });
-    return descAllSelected;
-  }
-
-  /** Whether part of the descendants are selected */
-  descendantsPartiallySelected(node: DynamicFlatNode): boolean {
-    const descendants = this.treeControl.getDescendants(node);
-    const result = descendants.some(child => this.checklistSelection.isSelected(child));
-    return result && !this.descendantsAllSelected(node);
-  }
-
-  /** Toggle the to-do item selection. Select/deselect all the descendants node */
-  todoItemSelectionToggle(node: DynamicFlatNode): void {
-    this.checklistSelection.toggle(node);
-    const descendants = this.treeControl.getDescendants(node);
-    this.checklistSelection.isSelected(node)
-      ? this.checklistSelection.select(...descendants)
-      : this.checklistSelection.deselect(...descendants);
-
-
-
-  }
-  
   todoLeafItemSelectionToggle(node: DynamicFlatNode): void {
     this.checklistSelection.toggle(node);
   }
 
-
-  DialogData(){
+  DialogSelectedPathData(){
     return this.checklistSelection.selected;
   }
 

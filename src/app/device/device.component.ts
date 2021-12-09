@@ -7,7 +7,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
 import { DeviceService } from '@services/device.service';
-import { QueryBuilder } from '@/models/queryBuilder';
+import { QueryBuilder } from '@/models/queryBuilder/queryBuilder'
 import { PagingComponent } from '@components/paging/paging.component';
 import { DialogComponent } from '@components/sftp-server-dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -94,14 +94,12 @@ export class DeviceComponent implements OnInit, AfterViewInit{
    
   }
   
-
   applyFilter(input){
     this.query.filter(f => f
       .filterContains(`contains(DeviceName,'${input.trim()}')`)
       .filterContains(`contains(Version,'${input.trim()}')`),'or')           
     this.getAllDevices();
   }
-
 
   SelectDevice(isSelected, row: Device){
     //myVar[row.id] = row;
@@ -129,7 +127,6 @@ export class DeviceComponent implements OnInit, AfterViewInit{
     return false;
   }
 
-  //Work everytime
   inPageAllSelected() {  
     this.isAllchecked = true;  
     if(this.dataSource.data.length > 0){

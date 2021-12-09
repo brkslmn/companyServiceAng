@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { ApiService } from '@services/api.service';
+
 @Component({
     selector: 'app-menu-sidebar',
     templateUrl: './menu-sidebar.component.html',
@@ -7,16 +8,41 @@ import { ApiService } from '@services/api.service';
 })
 export class MenuSidebarComponent implements OnInit {
     public user;
-    public roles: string;
     public menu = MENU;
-
+    public roles : string[];
+    public roleMap = new Map<string, number>();
+    
     constructor(public apiService: ApiService) {}
 
     ngOnInit() {
         this.user = this.apiService.user;
-        this.roles = localStorage.getItem("roleNames");
+        this.getListRoles();
     }
-}
+
+
+    getListRoles(){
+        this.roles = JSON.parse(localStorage.getItem("user")).role;
+
+      
+        for(var role of this.roles){
+            this.roleMap.set(role, parseInt(role));
+        }
+        
+        return this.roleMap;
+    }
+
+    roleHaS(){
+        if(this.roleMap.has("1")){
+            return true;
+        }else{
+            return false;
+        }
+
+
+
+
+    }
+}   
 
 export const MENU = [
     // {

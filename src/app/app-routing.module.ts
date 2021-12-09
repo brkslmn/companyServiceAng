@@ -15,7 +15,6 @@ import {MainMenuComponent} from '@pages/main-menu/main-menu.component';
 import {SubMenuComponent} from '@pages/main-menu/sub-menu/sub-menu.component';
 import { CompanyComponent } from './company/company.component';
 import { DeviceComponent } from './device/device.component';
-import { UploadComponent } from './upload/upload.component';
 import { Error404Component } from './error404/error404.component';
 
 const routes: Routes = [
@@ -53,10 +52,6 @@ const routes: Routes = [
             {
                 path: 'device',
                 component: DeviceComponent
-            },
-            {
-                path: 'upload',
-                component: UploadComponent
             },
         ]
     },

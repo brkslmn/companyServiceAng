@@ -37,7 +37,6 @@ import {DropdownComponent} from './components/dropdown/dropdown.component';
 import {DropdownMenuComponent} from './components/dropdown/dropdown-menu/dropdown-menu.component';
 import { CompanyComponent } from './company/company.component';
 import { DeviceComponent } from './device/device.component';
-import { UploadComponent } from './upload/upload.component';
 import { Error404Component } from './error404/error404.component';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatTableModule } from '@angular/material/table';
@@ -53,6 +52,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { DialogComponent } from '@components/sftp-server-dialog/dialog.component';
 import {MatIconModule} from '@angular/material/icon';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {CdkAccordionModule} from '@angular/cdk/accordion';
 
 import {TreeModule} from 'primeng/tree';
 import { TreeSelectModule } from 'primeng/treeselect';
@@ -88,6 +88,7 @@ registerLocaleData(localeEn, 'en-EN');
         MatIconModule,
         TreeModule,
         TreeSelectModule,
+        CdkAccordionModule,
         ToastrModule.forRoot({
             timeOut: 3000,
             positionClass: 'toast-bottom-right',
@@ -127,7 +128,6 @@ registerLocaleData(localeEn, 'en-EN');
         DropdownMenuComponent,
         CompanyComponent,
         DeviceComponent,
-        UploadComponent,
         Error404Component,
         PagingComponent,
         DialogComponent,

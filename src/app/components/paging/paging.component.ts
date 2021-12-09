@@ -1,4 +1,4 @@
-import { QueryBuilder } from '@/models/queryBuilder';
+import { QueryBuilder } from '@/models/queryBuilder/queryBuilder';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 

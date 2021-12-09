@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { RestService } from './rest.service';
 import { Device } from '@/device/device';
 import { Observable } from 'rxjs';
-import { QueryBuilder } from '@/models/queryBuilder';
+import { QueryBuilder } from '@/models/queryBuilder/queryBuilder';
 
 @Injectable({
   providedIn: 'root'

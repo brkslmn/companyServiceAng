@@ -10,6 +10,8 @@ import { Device } from '@/device/device';
 import { environment } from 'environments/environment'; 
 import { RestService } from './rest.service';
 import { DeviceService } from './device.service';
+import jwt_decode from 'jwt-decode';
+import { TokenService } from './token.service';
 
 @Injectable({
     providedIn: 'root'
@@ -19,31 +21,38 @@ export class ApiService {
     public user: any = null;
     public userRoles: string;
 
-    constructor(private http: HttpClient, private router:Router, private toastr:ToastrService, private rest:RestService, private deviceRest:DeviceService) {}
+    constructor(private http: HttpClient, private router:Router, private toastr:ToastrService, private rest:RestService, private deviceRest:DeviceService, private tokenService:TokenService) {}
     
     public loginByAuth(value){
-        const credentials = JSON.stringify(value);
-        this.http.post(environment.apiUrl+"users/authenticate", credentials, {
+        
+        let body = 'username=' + value.username + '&' + 'password=' +
+        value.password + '&' + 'grant_type=password' + '&' + 'client_id=099153c2625149bc8ecb3e85e03f0022';
+
+        this.http.post("http://atlas.linkas.com.tr:65010/token", body, {
             headers: new HttpHeaders({
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
         })
     }).subscribe(response => {
-      const token = (<any>response).token;
+      const token = (<any>response).access_token;
       localStorage.setItem("token", token);
-      const roleName = (<any>response).roleName;
-      this.userRoles = roleName;
-      localStorage.setItem("roleNames", roleName);
-      this.invalidLogin = false;
       this.router.navigate(['/']);
-      const user= (<any>response);
+
+      const decoded = jwt_decode(token);
+      console.log(decoded); 
+      
+      const user= decoded;
       localStorage.setItem("user", JSON.stringify(user));
+
+      
+    
+      this.invalidLogin = false;
     }, err => {
       if (this.invalidLogin = true) {
         this.toastr.error('İnvalid username or password!');
     }
     });
   }
-
+  
   async registerByAuth(value){  
     const credentials = JSON.stringify(value);
       this.http.post(environment.apiUrl+"users/register", credentials, {
